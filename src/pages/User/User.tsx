@@ -3,8 +3,10 @@ import { UserController, IUser } from '../../controllers/User';
 import { UserProjectsBar } from '../../components/UserProjectsBar';
 import { IRouteProps } from '../../util/Route';
 import './style.css';
+import { UserProjectPanel } from '../../components/UserProjectPanel/index';
+import { IProject } from '../../Models/Project';
 
-interface IUserProps extends IRouteProps<{ username: string }, {}> {
+interface IUserProps extends IRouteProps<{ username: string, project: string, build: string }, {}> {
 	username?: string;
 	project?: string;
 	build?: string;
@@ -15,6 +17,7 @@ interface IUserState {
 	loading: boolean;
 	signedIn: boolean;
 	user: IUser | null;
+	selectedProject: string | null;
 }
 
 export class User extends React.Component<IUserProps, IUserState> {
@@ -35,20 +38,36 @@ export class User extends React.Component<IUserProps, IUserState> {
 			loading: true,
 			signedIn: false,
 			user: null,
+			selectedProject: props.match.params.project ? props.match.params.project : null,
 		};
 	}
 
 	componentWillMount() {
+		const newState = {...this.state};
+		let setState = false;
+		
+		if (this.state.selectedProject === null && typeof this.props.match.params.project === 'string') {
+			newState.selectedProject = this.props.match.params.project;
+			setState = true;
+		}
+
 		if (!(this.username)) {
-			this.setState({...this.state, loading: false, error: 'No user provided'});
-		} else if (null === this.state.user) {
-			this.userController.getUser(this.username)
-				.then(user => this.setState({...this.state, user, signedIn: user !== null, loading: false}))
-				.catch((e: Error) => {
-						this.setState({...this.state, user: null, signedIn: false, loading: false, error: e.message});
-				});
+			newState.loading = false;
+			newState.error = 'No user provided';
+			setState = true;
+		// } else if (null === this.state.user) {
+		// 	this.userController.getUser(this.username)
+		// 		.then(user => this.setState({...this.state, user, signedIn: user !== null, loading: false}))
+		// 		.catch((e: Error) => {
+		// 				this.setState({...this.state, user: null, signedIn: false, loading: false, error: e.message});
+		// 		});
 		} else {
-			this.setState({...this.state, loading: false});
+			newState.loading = false;
+			setState = true;
+		}
+
+		if (setState) {
+			this.setState(newState);
 		}
 	}
 
@@ -68,23 +87,31 @@ export class User extends React.Component<IUserProps, IUserState> {
 		}
 
 		const userParams: any = {...this.props};
-		if (this.state.user) {
-			userParams.username = this.state.user.username || this.state.user.id;
+		if (this.username) {
+			userParams.username = this.username;
 		}
 
 		return (
 			<div className="page-user">
-				<UserProjectsBar {...userParams} />
-				<div className="project-builds">
-					<div className="App-header">
-						<h2>UserController: {this.state.user ? this.state.user.username : ''}</h2>
+				<UserProjectsBar {...userParams} onProjectSelected={(p) => this.onProjectSelected(p)} />
+				{this.state.selectedProject === null ? 
+					<div className="project-builds">
+						<div className="App-header">
+							<h2>UserController: {this.state.user ? this.state.user.username : ''}</h2>
+						</div>
+						<p className="App-intro">
+							To get started, edit <code>src/App.tsx</code> and save to reload yo.
+						</p>
 					</div>
-					<p className="App-intro">
-						To get started, edit <code>src/App.tsx</code> and save to reload yo.
-					</p>
-				</div>
+					:
+					<UserProjectPanel {...userParams} project={this.state.selectedProject} />
+				}
 			</div>
 		);
+	}
+
+	private onProjectSelected(project: IProject) {
+		this.setState({ ...this.state, selectedProject: project.name });
 	}
 }
 

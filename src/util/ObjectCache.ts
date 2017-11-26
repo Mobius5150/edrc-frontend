@@ -1,3 +1,5 @@
+import { setInterval } from 'timers';
+
 const deepExtend = require('deep-extend');
 
 type ObjectGetterFunc<Obj> = (key: string) => Promise<Obj>;
@@ -13,7 +15,6 @@ class CacheArray<Obj> extends Array<Obj> {
 	private hasIterated: boolean;
 
 	public static create<Obj>(items: Array<Obj>, cache: ObjectCache<Obj>, initialCount: number): CacheArray<Obj> {
-		// return Object.create(CacheArray.prototype);
 		return new CacheArray<Obj>(items, cache, initialCount);
 	}
 
@@ -39,6 +40,25 @@ class CacheArray<Obj> extends Array<Obj> {
 			}
 
 			ret.push(callbackfn.call(thisArg, obj, i, this));
+		}
+
+		this.hasIterated = true;
+
+		return ret;
+	}
+
+	public filter<S extends Obj>(callbackfn: (value: Obj, index: number, array: Obj[]) => value is S, thisArg?: any): S[] {
+		const ret: S[] = [];
+		for (var i = 0; i < this.length; ++i) {
+			const obj = this[i];
+			if (!this.hasIterated) {
+				this.cache.addToCache(obj, this.initialCount);
+			}
+
+			const val = callbackfn.call(thisArg, obj, i, this);
+			if (val) {
+				ret.push(val);
+			}
 		}
 
 		this.hasIterated = true;
@@ -82,7 +102,10 @@ class CacheEntry<Obj> {
 
 			this.take(take);
 			return result;
+		} else if (this.value instanceof Error) {
+			return this.value;
 		} else {
+			this.take(take);
 			return this.value;
 		}
 	}
@@ -141,21 +164,27 @@ class CacheEntry<Obj> {
 }
 
 export class ObjectCache<Obj extends {}> {
+	private static readonly CacheClearInterval: number = 5000;
+	private static readonly CacheClearMaxItems: number = 10;
 	private getterFunc: ObjectGetterFunc<Obj>;
 	private params: IObjectCacheParams;
 	private cache: {[key: string]: CacheEntry<Obj>};
+	private checkInterval: NodeJS.Timer | null;
+	private cacheClearList: string[];
 
 	constructor(getter: ObjectGetterFunc<Obj>, params: IObjectCacheParams) {
 		this.getterFunc = getter;
 		this.params = params;
 		this.cache = {};
+		this.cacheClearList = [];
+		this.checkInterval = null;
 	}
 
 	public async getObjectById(key: string, take: boolean | number = false): Promise<Obj | Error | null> {
 		let takeCount = 0;
 		if (take === true) {
 			takeCount = 1;
-		} else if (typeof take === 'number' && takeCount > 0) {
+		} else if (typeof take === 'number' && take > 0) {
 			takeCount = take;
 		}
 
@@ -183,8 +212,7 @@ export class ObjectCache<Obj extends {}> {
 		this.cache[key].release(count);
 
 		if (this.cache[key].references === 0) {
-			// TODO: timed release
-			delete this.cache[key];
+			this.addToCacheClearList(key);
 		}
 	}
 
@@ -199,6 +227,7 @@ export class ObjectCache<Obj extends {}> {
 	public addToCache(obj: Obj, initialCount: number = 0) {
 		const key: string = obj[this.params.keyField];
 		let entry: CacheEntry<Obj> | null = null;
+
 		if (this.cache[key]) {
 			entry = this.cache[key];
 			entry.mergeIn(obj);
@@ -210,8 +239,20 @@ export class ObjectCache<Obj extends {}> {
 		entry.take(initialCount);
 	}
 
-	public addManyToCache(objects: Obj[], initialCount: number = 1): Array<Obj> {
-		if (this.params.lazyCacheArrays) {
+	/**
+	 * Adds all objects in the array to the cache with the given initialCount.
+	 * 
+	 * If lazyCacheArrays is true, this will return an instance of CacheArray<Obj>. When iterating over a 
+	 * CacheArray be sure to call the array iteration functions (`array.forEach` and `array.map`) rather than iterating manually.
+	 * When you do this objects will be cached as you iterate them - saving an iteration of the array.
+	 * 
+	 * If lazyCacheArrays is false then this will return the array you pass it after caching all items, unmodified.
+	 * @param objects 
+	 * @param initialCount 
+	 * @param lazyCacheArrays Whether to perform lazy caching of arrays.
+	 */
+	public addManyToCache(objects: Obj[], initialCount: number = 1, lazyCacheArrays: boolean = this.params.lazyCacheArrays): Array<Obj> {
+		if (lazyCacheArrays) {
 			return CacheArray.create(objects, this, initialCount);
 		}
 
@@ -220,5 +261,36 @@ export class ObjectCache<Obj extends {}> {
 		}
 
 		return objects;
+	}
+
+	private clearDereferencedItems = () => {
+		const clearCount = this.cacheClearList.length > ObjectCache.CacheClearMaxItems ? ObjectCache.CacheClearMaxItems : this.cacheClearList.length;
+		for (var i = 0; i < clearCount; ++i) {
+			const key = this.cacheClearList[i];
+			if (!this.cache[key] || this.cache[key].references > 0) {
+				continue;
+			}
+
+			delete this.cache[key];
+
+			if (++i >= ObjectCache.CacheClearMaxItems) {
+				break;
+			}
+		}
+
+		this.cacheClearList.splice(0, i);
+
+		if (this.cacheClearList.length === 0 && this.checkInterval !== null) {
+			clearInterval(this.checkInterval);
+			this.checkInterval = null;
+		}
+	}
+
+	private addToCacheClearList(key: string) {
+		const previousLength = this.cacheClearList.length;
+		this.cacheClearList.push(key);
+		if (previousLength === 0 && this.checkInterval === null) {
+			this.checkInterval = setInterval(this.clearDereferencedItems, ObjectCache.CacheClearInterval);
+		}
 	}
 }
