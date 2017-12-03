@@ -93,7 +93,8 @@ export class User extends React.Component<IUserProps, IUserState> {
 
 		return (
 			<div className="page-user">
-				<UserProjectsBar {...userParams} onProjectSelected={(p) => this.onProjectSelected(p)} />
+				<div className="box">
+				<UserProjectsBar {...userParams} project={this.state.selectedProject} onProjectSelected={(p) => this.onProjectSelected(p)} />
 				{this.state.selectedProject === null ? 
 					<div className="project-builds">
 						<div className="App-header">
@@ -106,6 +107,7 @@ export class User extends React.Component<IUserProps, IUserState> {
 					:
 					<UserProjectPanel {...userParams} project={this.state.selectedProject} />
 				}
+				</div>
 			</div>
 		);
 	}

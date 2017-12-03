@@ -19,7 +19,7 @@ export class ProjectController {
 					lazyCacheArrays: true
 				});
 
-			console.log('Cache', ProjectController.Cache);
+			console.log('Project Cache', ProjectController.Cache);
 		}
 
 		this.edrcClient = new Edrc().getClient();

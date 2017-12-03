@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { UserController } from '../../controllers/User';
 import { ProjectController } from '../../controllers/Project';
+import { BuildController } from '../../controllers/Build';
 import './style.css';
 import { IProject } from '../../Models/Project';
+import { IBuildListResult } from '../../Models/Build';
+import { BuildListItem } from './BuildListItem';
 
 interface IUserProjectsPanelProps {
 	username: string;
@@ -12,11 +14,13 @@ interface IUserProjectsPanelProps {
 interface IUserProjectsPanelState {
 	loading: boolean;
 	project: IProject | null;
+	builds: IBuildListResult | null;
+	buildsLoading: boolean;
 }
 
 export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, IUserProjectsPanelState> {
-	private userController: UserController;
 	private projectController: ProjectController;
+	private buildController: BuildController;
 	private username: string;
 	private project: string;
 
@@ -24,41 +28,49 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 		super(props);
 		this.username = this.props.username;
 		this.project = this.props.project;
-		this.userController = new UserController();
 		this.projectController = new ProjectController();
+		this.buildController = new BuildController();
 		this.state = {
 			loading: true,
+			buildsLoading: true,
 			project: null,
+			builds: null,
 		};
 	}
 
 	componentWillMount() {
-		// if (null === this.state.user) {
-		// 	this.loadUser();
-		// } else 
+		let loaded = true;
 		if (null === this.state.project) {
 			this.loadProject();
-		} else {
-			this.setState({...this.state, loading: false});
+			loaded = false;
+		}
+
+		if (null === this.state.builds) {
+			this.loadBuilds();
+			loaded = false;
+		}
+		
+		if (loaded) {
+			this.setState({...this.state, loading: false, buildsLoading: false});
 		}
 	}
 
 	componentWillUpdate() {
-		// const oldUserId = this.props.username;
-		// const newUserId = this.state.user ? this.state.user.id : '';
-		// if (oldUserId !== newUserId) {
-		// 	this.username = this.props.username;
-		// 	this.setState({
-		// 		...this.state,
-		// 		user: null,
-		// 		signedIn: false,
-		// 		projects: null,
-		// 		loading: true,
-		// 	});
+		const oldId = this.props.username + '/' + this.props.project;
+		const newId = this.state.project ? this.state.project.fullName : '';
+		if (oldId !== newId && !this.state.loading) {
+			this.username = this.props.username;
+			this.setState({
+				...this.state,
+				project: null,
+				builds: null,
+				loading: true,
+				buildsLoading: true,
+			});
 
-		// 	this.loadUser();
-		// 	this.loadUserProjects();
-		// }
+			this.loadProject();
+			this.loadBuilds();
+		}
 	}
 
 	componentWillUnmount() {
@@ -67,22 +79,19 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 		}
 	}
 
-	// loadUser() {
-	// 	if (!(this.state.user)) {
-	// 		this.userController.getUser(this.username)
-	// 			.then(user => { 
-	// 				this.setState({...this.state, user, signedIn: user !== null});
-	// 				this.loadUserProjects();
-	// 			})
-	// 			.catch(e => this.setState({...this.state, user: null, signedIn: false}));
-	// 	}
-	// }
-
 	loadProject() {
 		if (!(this.state.project)) {
 			this.projectController.getUserProject(this.username, this.project, 1)
 				.then(project => this.setState({...this.state, project, loading: false}))
 				.catch(e => this.setState({...this.state, project: null, loading: false}));
+		}
+	}
+
+	loadBuilds() {
+		if (!(this.state.builds)) {
+			this.buildController.getProjectBuilds(this.username, this.project, { filter: 'summary' }, 1)
+				.then(builds => this.setState({...this.state, builds, buildsLoading: false}))
+				.catch(e => this.setState({...this.state, builds: null, buildsLoading: false}));
 		}
 	}
 
@@ -103,22 +112,86 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 		return (
 			<div className="project">
 				<h2>{project.fullName}</h2>
-				<div className="branches">
+				{this.renderBuilds()}
+			</div>
+		);
+	}
+
+	renderBuilds() {
+		if (this.state.buildsLoading) {
+			return (
+				<div className="project-builds">
+					<div className="branches build-section">
+						<div className="branches-header build-header">
+							<h3>Branches</h3>
+						</div>
+						<div className="loading" />
+					</div>
+					<div className="builds build-section">
+						<div className="builds-header build-header">
+							<h3>Builds</h3>
+						</div>
+						<div className="loading" />
+					</div>
+				</div>
+			);
+		}
+
+		if (null === this.state.builds) {
+			return (
+				<div className="project-builds">
+					<div className="error"><p>An error occured loading builds for the project</p></div>
+				</div>
+			);
+		}
+
+		const builds = this.state.builds;
+		return (
+			<div className="project-builds">
+				<div className="branches build-section">
 					<div className="branches-header">
 						<h3>Branches</h3>
 					</div>
-					<div className="branch">
-						<span className="branch-name">Branchname</span>
-					</div>
+					{this.renderBuildBranches(builds.branches)}
 				</div>
-				<div className="builds">
+				<div className="builds build-section">
 					<div className="builds-header">
 						<h3>Builds</h3>
 					</div>
-					<div className="build">
-						<span className="build-name">Buildname</span>
-					</div>
+					{this.renderBuildList(builds.builds)}
 				</div>
+			</div>
+		);
+	}
+
+	private renderBuildBranches(branches: IBuildListResult['branches']) {
+		if (!branches) {
+			return (
+				<div className="builds empty">
+					<p>No builds found for any branches. Trigger a build by pushing to your repo and check back!</p>
+				</div>
+			);
+		}
+
+		return (
+			<div className="builds">
+				{Object.keys(branches).map(b => <BuildListItem build={branches[b]} header={b} key={b} />)}
+			</div>
+		);
+	}
+
+	private renderBuildList(builds: IBuildListResult['builds']) {
+		if (!builds || builds.length === 0) {
+			return (
+				<div className="builds empty">
+					<p>No builds found. Trigger a build by pushing to your repo and check back!</p>
+				</div>
+			);
+		}
+
+		return (
+			<div className="builds">
+				{builds.map(b => <BuildListItem build={b} header={b.buildId} key={b.buildId} />)}
 			</div>
 		);
 	}

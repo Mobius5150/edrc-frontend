@@ -4,7 +4,8 @@
     width: 15%;
     max-width: 500px;
     min-width: 100px;
-    background-color: @headerBackgroundColor;
+    // background-color: @headerBackgroundColor;
+    background: linear-gradient(@headerBackgroundColor, @headerBackgroundColor2);
     color: @headerTextColor;
     display: flex;
     flex-direction: column;
@@ -17,7 +18,16 @@
 
         li {
             margin: 0;
-            padding: 5px;
+            padding: 10px;
+
+            &.selected {
+                background: rgba(255, 255, 255, 0.4);
+            }
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.2);
+                cursor: pointer;
+            }
         }
     }
 

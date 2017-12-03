@@ -224,7 +224,7 @@ export class ObjectCache<Obj extends {}> {
 		return this.cache[key].refresh(this.getterFunc(key));
 	}
 
-	public addToCache(obj: Obj, initialCount: number = 0) {
+	public addToCache(obj: Obj, initialCount: number = 0): Obj {
 		const key: string = obj[this.params.keyField];
 		let entry: CacheEntry<Obj> | null = null;
 
@@ -237,6 +237,7 @@ export class ObjectCache<Obj extends {}> {
 		}
 
 		entry.take(initialCount);
+		return entry.value as Obj;
 	}
 
 	/**

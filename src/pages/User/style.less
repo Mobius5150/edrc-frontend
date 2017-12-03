@@ -1,9 +1,29 @@
 @import '../../app';
 
 .page-user {
-    height: 100%;
+    position: absolute;
+    top: @headerHeight;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: flex;
-    flex-direction: row;
+
+    .user-projects {
+        .loading,
+        .loading:before,
+        .loading:after {
+            background: @loader-color-inverted;
+            color: @loader-color-inverted;
+        }
+    }
+
+    .box {
+        min-height: -moz-min-content;
+        min-height: -webkit-min-content;
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+    }
 
     .project-builds {
     }

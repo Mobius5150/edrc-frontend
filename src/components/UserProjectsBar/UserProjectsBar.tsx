@@ -2,6 +2,7 @@ import * as React from 'react';
 import { UserController, IUser } from '../../controllers/User';
 import { ProjectController } from '../../controllers/Project';
 import * as Modal from 'react-modal';
+import classNames from 'classnames';
 
 import './style.css';
 import { IProject } from '../../Models/Project';
@@ -19,18 +20,17 @@ interface IUserProjectsBarState {
 	user: IUser | null;
 	modalIsOpen: boolean;
 	projects: IProject[] | null;
+	selectedProject: string | null;
 }
 
 export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUserProjectsBarState> {
 	private userController: UserController;
 	private projectController: ProjectController;
 	private username: string;
-	private selectedProject: string;
 
 	public constructor(props: IUserProjectsBarProps) {
 		super(props);
 		this.username = this.props.username;
-		this.selectedProject = this.props.project;
 		this.userController = new UserController();
 		this.projectController = new ProjectController();
 		this.state = {
@@ -39,6 +39,7 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 			user: null,
 			projects: null,
 			modalIsOpen: false,
+			selectedProject: `${this.props.username}/${this.props.project}`,
 		};
 	}
 
@@ -109,7 +110,10 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 				</div>}
 				<ul>
 					{projects.map(project => (
-						<li key={project.fullName} onClick={() => this.selectProject(project)}>{project.fullName}</li>
+						<li 
+							key={project.fullName}
+							className={classNames({ selected: this.state.selectedProject === project.fullName })}
+							onClick={() => this.selectProject(project)}>{project.fullName}</li>
 					))}
 				</ul>
 				<div className="add-project">
@@ -143,8 +147,11 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 	}
 
 	private selectProject(project: IProject) {
-		if (typeof this.props.onProjectSelected === 'function') {
-			this.props.onProjectSelected(project);
+		if (this.state.selectedProject !== project.fullName) {
+			this.setState({...this.state, selectedProject: project.fullName });
+			if (typeof this.props.onProjectSelected === 'function') {
+				this.props.onProjectSelected(project);
+			}
 		}
 	}
 

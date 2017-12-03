@@ -1,88 +1,19 @@
-@headerBackgroundColor: #3d3d3d;
+@headerBackgroundColor: #3263f2;
+@headerBackgroundColor2: #d73fd6;
 @headerTextColor: #fff;
-@headerHeight: 50px;
+@headerHeight: 64px;
 
-@betaBadgeColor: rgb(236, 47, 0);
-@betaBadgeTextColor: #FFFFFF;
+@betaBadgeColor: #3d3d3d;// rgb(236, 47, 0);
+@betaBadgeTextColor: #fff;
 
 @signInButtonColor: rgb(128, 128, 128);
 @signInButtonTextColor: #fff;
 @signInButtonHoverColor: rgb(85, 85, 85);
 @signInButtonHoverTextColor: rgb(233, 233, 233);
 
-body, html {
-    height: 100%;
-    width: 100%;
-}
+@loader-color: #3d3d3d;// #f3f6f8;
+@loader-color-inverted: #f3f6f8;
 
-#root, #root > div {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.header {
-    background-color: @headerBackgroundColor;
-    color: @headerTextColor;
-    text-transform: uppercase;
-
-    .header-logo {
-        @headerLogoPadding: 10px;
-
-        display: inline-block;
-        padding: @headerLogoPadding 0 0 @headerLogoPadding;
-        height: @headerHeight;
-        
-        h1 {
-            float: left;
-            padding: 0px;
-            margin: 0px;
-            vertical-align: top;
-        }
-
-        .status {
-            font-variant: small-caps;
-            font-size: 10px;
-            line-height: 8px;
-            color: @betaBadgeTextColor;
-            background-color: @betaBadgeColor;
-            padding: 5px;
-            float: left;
-            vertical-align: bottom;
-            border-radius: 6px;
-        }
-    }
-
-    .user-profile {
-        float: right;
-
-        img {
-            @userProfileImageSize: 50px;
-            height: @userProfileImageSize;
-            width: @userProfileImageSize;
-            border-radius: 30px;
-            padding: 5px;
-        }
-
-        &:not(.authed) {
-            .sign-in {
-                background-color: @signInButtonColor;
-                color: @signInButtonTextColor;
-                border: 0;
-                padding: 10px;
-                margin: 10px;
-                vertical-align: middle;
-                border-radius: 6px;
-                display: inline-block;
-                text-decoration: none;
-                
-                &:hover {
-                    background-color: @signInButtonHoverColor;
-                    color: @signInButtonHoverTextColor;
-                    cursor: pointer;
-                }
-            }
-        }
-    }
-}
+@build-color-default: #afafaf;
+@build-color-pass: #00FF33;
+@build-color-fail: #E50000;

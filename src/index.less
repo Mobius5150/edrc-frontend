@@ -1,0 +1,142 @@
+@import './app';
+
+body, html {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: sans-serif;
+}
+
+#root, #root > div {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.header {
+	background-color: @headerBackgroundColor;
+	color: @headerTextColor;
+	text-transform: uppercase;
+	height: @headerHeight;
+
+	.header-logo {
+		@headerLogoPadding: 10px;
+
+		display: inline-block;
+		padding: @headerLogoPadding 0 0 @headerLogoPadding;
+		height: @headerHeight;
+		
+		h1 {
+			float: left;
+			padding: 0px;
+			margin: 0px;
+			vertical-align: top;
+		}
+
+		.status {
+			font-variant: small-caps;
+			font-size: 10px;
+			line-height: 8px;
+			color: @betaBadgeTextColor;
+			background-color: @betaBadgeColor;
+			padding: 5px;
+			float: left;
+			vertical-align: bottom;
+			border-radius: 6px;
+		}
+	}
+
+	.user-profile {
+		float: right;
+
+		img {
+			@userProfileImageSize: 50px;
+			height: @userProfileImageSize;
+			width: @userProfileImageSize;
+			border-radius: 30px;
+			padding: 5px;
+		}
+
+		&:not(.authed) {
+			.sign-in {
+				background-color: @signInButtonColor;
+				color: @signInButtonTextColor;
+				border: 0;
+				padding: 10px;
+				margin: 10px;
+				vertical-align: middle;
+				border-radius: 6px;
+				display: inline-block;
+				text-decoration: none;
+				
+				&:hover {
+					background-color: @signInButtonHoverColor;
+					color: @signInButtonHoverTextColor;
+					cursor: pointer;
+				}
+			}
+		}
+	}
+}
+
+.loading,
+.loading:before,
+.loading:after {
+	background: @loader-color;
+	-webkit-animation: load1 1s infinite ease-in-out;
+	animation: load1 1s infinite ease-in-out;
+	width: 1em;
+	height: 4em;
+}
+.loading {
+	color: @loader-color;
+	text-indent: -9999em;
+	margin: 88px auto;
+	position: relative;
+	font-size: 11px;
+	-webkit-transform: translateZ(0);
+	-ms-transform: translateZ(0);
+	transform: translateZ(0);
+	-webkit-animation-delay: -0.16s;
+	animation-delay: -0.16s;
+}
+.loading:before,
+.loading:after {
+	position: absolute;
+	top: 0;
+	content: '';
+}
+.loading:before {
+	left: -1.5em;
+	-webkit-animation-delay: -0.32s;
+	animation-delay: -0.32s;
+}
+.loading:after {
+  	left: 1.5em;
+}
+@-webkit-keyframes load1 {
+	0%,
+	80%,
+	100% {
+		box-shadow: 0 0;
+		height: 4em;
+	}
+	40% {
+		box-shadow: 0 -2em;
+		height: 5em;
+	}
+}
+@keyframes load1 {
+	0%,
+	80%,
+	100% {
+		box-shadow: 0 0;
+		height: 4em;
+	}
+	40% {
+		box-shadow: 0 -2em;
+		height: 5em;
+	}
+}
