@@ -3,6 +3,7 @@ import './style.css';
 import { IProjectBuild } from '../../Models/Build';
 import { BuildDetails } from './BuildDetails';
 import classNames from 'classnames';
+import * as moment from 'moment';
 
 interface IBuildListItemProps {
 	build: IProjectBuild;
@@ -23,7 +24,9 @@ export class BuildListItem extends React.Component <IBuildListItemProps, IBuildL
 	}
 
 	render() {
+		moment.locale();
 		const build = this.props.build;
+		const buildMoment = moment(build.buildQueued);
 		return (
 			<div className={classNames({build: true, expanded: this.state.expanded})}>
 				<div className="build-summary" onClick={this.onExpandCollapse}>
@@ -31,7 +34,7 @@ export class BuildListItem extends React.Component <IBuildListItemProps, IBuildL
 						<h4>{this.props.header}</h4>
 						{this.renderBuildStatus()}
 					</div>
-					<span className="build-date">{build.buildQueued}</span>
+					<span className="build-date" title={buildMoment.format('LLL')}>{buildMoment.fromNow()}</span>
 				</div>
 				{this.state.expanded &&	
 					<BuildDetails {...this.props} />}
