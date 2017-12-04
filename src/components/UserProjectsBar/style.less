@@ -5,11 +5,12 @@
     max-width: 500px;
     min-width: 100px;
     // background-color: @headerBackgroundColor;
-    background: linear-gradient(@headerBackgroundColor, @headerBackgroundColor2);
+    
     color: @headerTextColor;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: relative;
 
     ul {
         list-style: none;
@@ -21,7 +22,7 @@
             padding: 10px;
 
             &.selected {
-                background: rgba(255, 255, 255, 0.4);
+                background: #1e1e1e;
             }
 
             &:hover {
@@ -34,5 +35,22 @@
     .add-project {
         height: 50px;
         text-align: center;
+        
+        button {
+            background-color: @buttonBackgroundColor;
+            border: 4px solid @buttonBorderColor;
+            border-radius: 3px;
+            color: @buttonTextColor;
+            font-weight: bold;
+            font-size: 1.1em;
+            padding: 0.2em 0.4em;
+
+            &:hover {
+                cursor: pointer;
+                background-color: @buttonHoverBackgroundColor;
+                border: 4px solid @buttonHoverBorderColor;
+                color: @buttonHoverTextColor;
+            }
+        }
     }
 }

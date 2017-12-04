@@ -1,37 +1,54 @@
 @import "../../app";
 
+@build-padding: 10px;
+@build-radius: 3px;
+
 .project {
 	padding: 20px;
 	width: 100%;
 	overflow: auto;
+	background-color: #1e1e1e;
 
 	& > h2 {
-		margin-top: 0;
+		margin-top: 0px;
 	}
 
 	.build-section {
 		h3 {
-			margin: 0;
+			margin: 10px 0;
 		}
 	}
 
 	.builds {
 		.build {
-			padding: 10px;
-			margin: 10px 0;
-			border-radius: 3px;
-			background-color: #f3f6f8;
+			padding: @build-padding;
+			margin: @build-padding 0;
+			border-radius: @build-radius;
+			background-color: @ui-box-color;
 
 			.build-summary {
-				padding: 10px;
-				margin: -10px;
-				border-radius: 3px;
+				padding: @build-padding;
+				margin: -@build-padding;
+				border-radius: @build-radius;
 				cursor: pointer;
 				&:hover {
-					background-color: #e0e2e4;
+					background-color: @ui-box-secondary-color;
 				}
 			}
-			
+
+			&.expanded {
+				background-color: #333;
+				margin-bottom: 0;
+				padding-bottom: 0;
+				position: relative;
+
+				.build-summary {
+					margin-bottom: 0;
+					border-bottom-left-radius: 0;
+					border-bottom-right-radius: 0;
+				}
+			}
+
 			.build-header {
 				h4 {
 					margin: 0;
@@ -40,6 +57,7 @@
 				
 				.build-status {
 					background-color: @build-color-default;
+					color: @build-color-default-text;
 					display: inline-block;
 					border-radius: 5px;
 					padding: 1px 5px;
@@ -55,6 +73,114 @@
 					&.fail {
 						background-color: @build-color-fail;
 						color: #fff;
+					}
+				}
+			}
+
+			.build-details {
+				margin: 0 -@build-padding;
+				display: flex;
+				flex-direction: row;
+				background-color: #252526;
+
+				.build-files {
+					border: 1px solid @ui-seperator-color;
+					border-bottom-left-radius: @build-radius;
+					background-color: @ui-box-secondary-color;
+
+					ul {
+						list-style: none;
+						margin: 0;
+						padding: 0;
+					}
+
+					li {
+						padding: @build-padding;
+						cursor: pointer;
+
+						&:hover, &.selected {
+							background-color: @ui-box-secondary-hover-color;
+						}
+
+						&:last-child {
+							border-bottom-left-radius: @build-radius;
+						}
+					}
+				}
+
+				.build-pane {
+					display: flex;
+					flex-direction: row;
+					padding: @build-padding;
+					padding-right: 0;
+					padding-top: 0;
+					flex: 1;
+
+					.errors {
+						max-height: 500px;
+						overflow-y: auto;
+						flex: 1;
+
+						.error-list-name {
+							background-color: @ui-box-tertiary-color;
+							padding: @build-padding;
+							padding-right: 0;
+							margin-right: @build-padding;
+							font-weight: bold;
+						}
+
+						&:last-child .error-list-name {
+							padding-right: @build-padding;
+							margin: 0;
+						}
+
+						table {
+							width: 100%;
+							border-spacing: 0;
+						}
+
+						th, td {
+							text-align: left;
+						}
+
+						.error-list {
+							.collapse-indicator {
+								padding-top: 2px;
+								padding-left: 3px;
+								width: 16px;
+								height: 16px;
+								font-family: 'Ionicons';
+								vertical-align: top;
+
+								&:before { content: "\f123"; }
+							}
+
+							.collapse-indicator, .error-group thead {
+								cursor: pointer;
+								&:hover {
+									color: @ui-icon-hover;
+									background-color: @ui-box-secondary-action-color;
+								}
+							}
+
+							.description {
+								padding-left: @build-padding;
+							}
+
+							&.collapsed {
+								.collapse-indicator:before { content: "\f125"; }
+								tbody, .header-layer {
+									display: none;
+								}
+							}
+
+							.error-group {
+								th:first-child {
+									width: 40%;
+									text-align: left;
+								}
+							}
+						}
 					}
 				}
 			}

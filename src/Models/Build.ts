@@ -61,3 +61,15 @@ export interface IBuildErcConfig {
 	file: string;
 	version?: string;
 }
+
+export type IBuildFileErrorsContract = IBuildFileErrors[];
+
+export interface IBuildFileErrors {
+	code: number;
+	state: string;
+	description: string;
+	layer: number; 
+	signature: string;
+	x: number;
+	y: number;
+}

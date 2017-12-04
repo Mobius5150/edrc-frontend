@@ -1,6 +1,6 @@
 import { ObjectCache } from '../util/ObjectCache';
 import { Edrc, Client } from './Edrc';
-import { IProjectBuild, IBuildListResult, IBuildDetails } from '../Models/Build';
+import { IProjectBuild, IBuildListResult, IBuildDetails, IBuildFileErrorsContract } from '../Models/Build';
 
 export interface IGetProjectBuildParams {
 	filter?: 'summary' | 'builds' | 'branches' | null;
@@ -78,6 +78,17 @@ export class BuildController {
 		}
 	}
 
+	public async getBuildFileDetails(build: IProjectBuild, normalizedFilename: string): Promise<IBuildFileErrorsContract> {
+		const params = { user: build.userName, project: build.projectId, build: build.buildId, normalizedFilename };
+		
+		const buildResponse = await this.edrcClient({ path: 'api/v1/user/{user}/project/{project}/build/{build}/details/{normalizedFilename}', params });
+		if (buildResponse.status.code !== 200) {
+			throw new Error(`User Projects Response ${buildResponse.status.text}`);
+		} else {
+			return this.toBuildFileDetails(buildResponse.entity);
+		}
+	}
+
 	public releaseProjectRef(fullName: string) {
 		BuildController.Cache.releaseObject(fullName);
 	}
@@ -106,6 +117,10 @@ export class BuildController {
 	}
 
 	private toBuildDetails(test: any): IBuildDetails {
+		return test;
+	}
+
+	private toBuildFileDetails(test: any): IBuildFileErrorsContract {
 		return test;
 	}
 }
