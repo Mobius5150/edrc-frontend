@@ -18,7 +18,7 @@ interface IBuildDetailsState {
 	expandedErrorGroups: {
 		other: IGroupList,
 		approved: IGroupList,
-	}
+	};
 }
 
 type IGroupList = { [groupName: string]: null };
@@ -48,7 +48,7 @@ export class BuildDetails extends React.Component <IBuildDetailsProps, IBuildDet
 				other: {},
 				approved: {},
 			}
-		}
+		};
 	}
 
 	componentWillMount() {
@@ -66,7 +66,7 @@ export class BuildDetails extends React.Component <IBuildDetailsProps, IBuildDet
 
 					this.setState({...this.state, error: null, loading: false, details, selectedFileName})
 				})
-				.catch(error => this.setState({...this.state, details: null, loading: false, error }))
+				.catch(error => this.setState({...this.state, details: null, loading: false, error }));
 		}
 	}
 
@@ -114,7 +114,7 @@ export class BuildDetails extends React.Component <IBuildDetailsProps, IBuildDet
 	}
 
 	render() {
-		if (this.state.selectedFileName !== null && this.state.currentFileErrors === null) {
+		if (this.state.currentFileErrors === null && null !== this.state.selectedFileName) {
 			this.loadFileErrors(this.state.selectedFileName);
 		}
 
@@ -156,6 +156,16 @@ export class BuildDetails extends React.Component <IBuildDetailsProps, IBuildDet
 				<div className="build-pane">
 					<div className="error">
 						An error occured loading details for the selected file.
+					</div>
+				</div>
+			);
+		}
+
+		if (null === this.state.selectedFileName) {
+			return (
+				<div className="build-pane">
+					<div className="error">
+						An error occured within the EDRC build runner that may be unrelated to your files. Please try the build again.
 					</div>
 				</div>
 			);
@@ -246,7 +256,12 @@ export class BuildDetails extends React.Component <IBuildDetailsProps, IBuildDet
 	}
 
 	selectFile(file: IBuildFileSummary): void {
-		this.setState({ ...this.state, selectedFileName: file.normalizedFilename });
+		const fileName = file.normalizedFilename;
+		if (this.fileErrors[fileName]) {
+			this.setState({ ...this.state, selectedFileName: fileName, currentFileErrors: this.fileErrors[fileName] });
+		} else {
+			this.setState({ ...this.state, selectedFileName: fileName, currentFileErrors: null });
+		}
 	}
 
 	getFileName(path: string): string {

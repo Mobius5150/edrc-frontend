@@ -20,10 +20,9 @@
         "jsdoc-format": true,
         "jsx-no-lambda": false,
         "jsx-no-multiline-js": false,
-        "label-position": true,
+        "label-position": false,
         "member-ordering": [
             true,
-            "public-before-private",
             "static-before-instance",
             "variables-before-functions"
         ],

@@ -39,6 +39,7 @@ export class ProjectController {
 	public async getUserProject(userIdOrName: string, projectName: string, initialCount: number = 1): Promise<IProject | null> {
 		const result = await ProjectController.Cache.getObjectById(`${userIdOrName}/${projectName}`, initialCount);
 		if (result instanceof Error) {
+			console.error('Project load error', result);
 			throw result;
 		}
 

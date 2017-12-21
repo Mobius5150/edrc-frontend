@@ -16,6 +16,8 @@ interface IUserProjectsPanelState {
 	project: IProject | null;
 	builds: IBuildListResult | null;
 	buildsLoading: boolean;
+	projectError: Error | null;
+	buildsError: Error | null;
 }
 
 export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, IUserProjectsPanelState> {
@@ -35,6 +37,8 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 			buildsLoading: true,
 			project: null,
 			builds: null,
+			projectError: null,
+			buildsError: null,
 		};
 	}
 
@@ -56,10 +60,11 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 	}
 
 	componentWillUpdate() {
-		const oldId = this.props.username + '/' + this.props.project;
-		const newId = this.state.project ? this.state.project.fullName : '';
+		const oldId = (this.props.username + '/' + this.props.project).toLowerCase();
+		const newId = (this.state.project ? this.state.project.fullName : '').toLowerCase();
 		if (oldId !== newId && !this.state.loading) {
 			this.username = this.props.username;
+			this.project = this.props.project;
 			this.setState({
 				...this.state,
 				project: null,
@@ -83,7 +88,7 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 		if (!(this.state.project)) {
 			this.projectController.getUserProject(this.username, this.project, 1)
 				.then(project => this.setState({...this.state, project, loading: false}))
-				.catch(e => this.setState({...this.state, project: null, loading: false}));
+				.catch(e => this.setState({...this.state, project: null, loading: false, projectError: e}));
 		}
 	}
 
@@ -91,7 +96,7 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 		if (!(this.state.builds)) {
 			this.buildController.getProjectBuilds(this.username, this.project, { filter: 'summary' }, 1)
 				.then(builds => this.setState({...this.state, builds, buildsLoading: false}))
-				.catch(e => this.setState({...this.state, builds: null, buildsLoading: false}));
+				.catch(e => this.setState({...this.state, builds: null, buildsLoading: false, buildsError: e}));
 		}
 	}
 
@@ -99,6 +104,8 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 		if (this.state.loading) {
 			return (<div className="loading" />);
 		}
+
+
 
 		if (this.state.project === null) {
 			return (
