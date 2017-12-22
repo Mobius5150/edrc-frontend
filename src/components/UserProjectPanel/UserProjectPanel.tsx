@@ -105,8 +105,6 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 			return (<div className="loading" />);
 		}
 
-
-
 		if (this.state.project === null) {
 			return (
 				<div className="error">

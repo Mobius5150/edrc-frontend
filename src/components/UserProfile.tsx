@@ -33,7 +33,6 @@ export class UserProfile extends React.Component<IUserProfileProps, IUserProfile
 		this.userController.getCurrentUser()
 			.then(user => this.setState({...this.state, signedIn: user !== null, user }))
 			.catch(e => {
-				console.trace(e);
 				this.setState({...this.state, signedIn: false});
 			});
 	}
