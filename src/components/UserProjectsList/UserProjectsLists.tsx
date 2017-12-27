@@ -74,7 +74,13 @@ export class UserProjectsList extends React.Component <IUserProjectsListProps, I
 				}
 				<div className="projects">
 					{projects.map(project => (
-						<div key={project.fullName} onClick={() => this.clicked(project)}>{project.fullName}</div>
+						<div
+							className="project-listing" 
+							key={project.fullName} 
+							onClick={() => this.handleProjectSelection(project)}
+						>
+							{project.fullName}
+						</div>
 					))}
 				</div>
 			</div>
@@ -89,8 +95,8 @@ export class UserProjectsList extends React.Component <IUserProjectsListProps, I
 		this.setState({...this.state, modalIsOpen: false});
 	}
 
-	private clicked(project: IProject) {
-		if (typeof this.props.onProjectSelected === 'function') {
+	private handleProjectSelection(project: IProject) {
+		if (this.props.onProjectSelected) {
 			this.props.onProjectSelected(project);
 		}
 	}
