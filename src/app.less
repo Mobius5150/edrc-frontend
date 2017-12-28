@@ -1,19 +1,30 @@
-@headerBackgroundColor: #252526;
-@headerBackgroundColor2: #252526;
-@headerTextColor: #fff;
+// Dark theme palette
+
+@backgroundPrimary: #2c2f37;
+@backgroundSecondary: #3b4148;
+@backgroundTertiary: #69a55a;
+@backgroundQuarternary: #64686e;
+
+@foregroundPrimary: #fff;
+@foregroundSecondary: #9fab9f;
+@foregroundTertiary: #83a47c;
+
+@headerBackgroundColor: @backgroundPrimary;
+@headerTextColor: @foregroundPrimary;
 @headerHeight: 64px;
 
-@body-text-color: #cccccc;
+@body-text-color: @foregroundPrimary;
 
 @betaBadgeColor: #e16700;// rgb(236, 47, 0);
-@betaBadgeTextColor: #fff;
+@betaBadgeTextColor: @foregroundPrimary;
 
-@buttonBackgroundColor: #333;
-@buttonTextColor: #fff;
+@buttonBackgroundColor: @backgroundTertiary;
+@buttonTextColor: @foregroundPrimary;
 @buttonBorderColor: @buttonBackgroundColor;
-@buttonHoverBackgroundColor: #1b51da;
-@buttonHoverTextColor: #fff;
-@buttonHoverBorderColor: #1b51da;
+
+@buttonHoverBackgroundColor: @foregroundTertiary;
+@buttonHoverTextColor: @foregroundPrimary;
+@buttonHoverBorderColor: @foregroundTertiary;
 
 @signInButtonColor: rgb(128, 128, 128);
 @signInButtonTextColor: #fff;
