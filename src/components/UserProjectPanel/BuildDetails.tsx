@@ -64,7 +64,7 @@ export class BuildDetails extends React.Component <IBuildDetailsProps, IBuildDet
 						selectedFileName = details.FileBuildResults[0].normalizedFilename;
 					}
 
-					this.setState({...this.state, error: null, loading: false, details, selectedFileName})
+					this.setState({...this.state, error: null, loading: false, details, selectedFileName});
 				})
 				.catch(error => this.setState({...this.state, details: null, loading: false, error }));
 		}
@@ -81,10 +81,10 @@ export class BuildDetails extends React.Component <IBuildDetailsProps, IBuildDet
 				const sorted = this.sortFileErrors(details);
 				this.fileErrors[normalizedFilename] = sorted;
 				if (this.state.selectedFileName === normalizedFilename) {
-					this.setState({ ...this.state, currentFileErrors: sorted, loadCurrentFileError: null })
+					this.setState({ ...this.state, currentFileErrors: sorted, loadCurrentFileError: null });
 				}
 			})
-			.catch(e => {this.setState({ ...this.state, currentFileErrors: null, loadCurrentFileError: e })});
+			.catch(e => {this.setState({ ...this.state, currentFileErrors: null, loadCurrentFileError: e }); });
 	}
 
 	private sortFileErrors(errors: IBuildFileErrorsContract) {
@@ -138,10 +138,12 @@ export class BuildDetails extends React.Component <IBuildDetailsProps, IBuildDet
 				<div className="build-files">
 					<ul>
 						{details.FileBuildResults.map(f => 
-							<li key={f.normalizedFilename} 
+							<li 
+								key={f.normalizedFilename} 
 								className={classNames({ 'build-file': true, 'selected': f.normalizedFilename === this.state.selectedFileName })}
-								onClick={() => this.selectFile(f)}>
-									<span title={f.filename}>{this.getFileName(f.filename)}</span>
+								onClick={() => this.selectFile(f)}
+							>
+								<span title={f.filename}>{this.getFileName(f.filename)}</span>
 							</li>)}
 					</ul>
 				</div>
@@ -182,8 +184,8 @@ export class BuildDetails extends React.Component <IBuildDetailsProps, IBuildDet
 
 		let otherErrorCount = 0;
 		let approvedErrorcount = 0;
-		Object.keys(errors.other).forEach(e => otherErrorCount += Object.keys(errors.other[e]).length)
-		Object.keys(errors.approved).forEach(e => approvedErrorcount += Object.keys(errors.approved[e]).length)
+		Object.keys(errors.other).forEach(e => otherErrorCount += Object.keys(errors.other[e]).length);
+		Object.keys(errors.approved).forEach(e => approvedErrorcount += Object.keys(errors.approved[e]).length);
 
 		return (
 			<div className="build-pane">
@@ -206,10 +208,15 @@ export class BuildDetails extends React.Component <IBuildDetailsProps, IBuildDet
 			<table>
 				<tbody>
 					{keys.map(e => 
-						<tr className={classNames({'error-list': true, collapsed: groupList[e] !== null})}
-							key={e}>
-								<td className="collapse-indicator" onClick={() => this.setErrorGroupCollapsed(e, groupList)}></td>
-								{this.renderErrorGroup(e, errors[e], groupList)}
+						<tr 
+							className={classNames({'error-list': true, collapsed: groupList[e] !== null})}
+							key={e}
+						>
+							<td 
+								className="collapse-indicator" 
+								onClick={() => this.setErrorGroupCollapsed(e, groupList)}
+							/>
+							{this.renderErrorGroup(e, errors[e], groupList)}
 						</tr>
 					)}
 				</tbody>
@@ -237,7 +244,7 @@ export class BuildDetails extends React.Component <IBuildDetailsProps, IBuildDet
 									<td className="description">{error.description}</td>
 									<td className="layer">{error.layer}</td>
 								</tr>
-							)
+							);
 						})}
 					</tbody>
 				</table>

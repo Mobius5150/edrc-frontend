@@ -20,7 +20,7 @@ export class BuildListItem extends React.Component <IBuildListItemProps, IBuildL
 
 		this.state = {
 			expanded: false,
-		}
+		};
 	}
 
 	render() {
@@ -71,10 +71,8 @@ export class BuildListItem extends React.Component <IBuildListItemProps, IBuildL
 	renderExpanded() {
 		return (
 			<div className="build-details">
-				<div className="build-files">
-				</div>
-				<div className="build-pane">
-				</div>
+				<div className="build-files" />
+				<div className="build-pane" />
 			</div>
 		);
 	}

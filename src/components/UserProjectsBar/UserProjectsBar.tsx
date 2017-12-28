@@ -113,7 +113,9 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 						<li 
 							key={project.fullName}
 							className={classNames({ selected: this.state.selectedProject === project.fullName })}
-							onClick={() => this.selectProject(project)}>{project.fullName}</li>
+							onClick={() => this.selectProject(project)}
+						>{project.fullName}
+						</li>
 					))}
 				</ul>
 				<div className="add-project">
