@@ -42,7 +42,7 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 		};
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		let loaded = true;
 		if (null === this.state.project) {
 			this.loadProject();

@@ -42,7 +42,7 @@ export class User extends React.Component<IUserProps, IUserState> {
 		};
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		const newState = {...this.state};
 		let setState = false;
 		

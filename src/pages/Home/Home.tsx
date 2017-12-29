@@ -23,7 +23,7 @@ class Home extends React.Component <IGenericRouteProps, IHomeState> {
 		};
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		if (null === this.state.user) {
 			this.userController.getCurrentUser()
 				.then(user => this.setState({...this.state, user, signedIn: user !== null, loading: false}))
