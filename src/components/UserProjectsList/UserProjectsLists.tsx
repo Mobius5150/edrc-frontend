@@ -36,7 +36,7 @@ export class UserProjectsList extends React.Component <IUserProjectsListProps, I
 		};
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		if (null === this.state.projects) {
 			this.loadUserProjects();
 		} else {

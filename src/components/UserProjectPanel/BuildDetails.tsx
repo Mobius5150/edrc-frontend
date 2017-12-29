@@ -51,7 +51,7 @@ export class BuildDetails extends React.Component <IBuildDetailsProps, IBuildDet
 		};
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.loadBuildDetails();
 	}
 
