@@ -102,24 +102,26 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 	render() {
 		const projects = this.state.projects || [];
 		return (
-			<div className="user-projects">
-				{this.state.loading && <div className="loading" />}
-				{!this.state.loading && this.state.projects === null && 
-					<div className="error">
-					<p>An error occured loading user projects. Please reload and try again.</p>
-				</div>}
-				<ul>
-					{projects.map(project => (
-						<li 
-							key={project.fullName}
-							className={classNames({ selected: this.state.selectedProject === project.fullName })}
-							onClick={() => this.selectProject(project)}
-						>{project.fullName}
-						</li>
-					))}
-				</ul>
-				<div className="add-project">
-					<button onClick={() => this.openModal()}>Add Project</button>
+			<React.Fragment>
+				<div className="user-projects">
+					{this.state.loading && <div className="loading" />}
+					{!this.state.loading && this.state.projects === null && 
+						<div className="error">
+						<p>An error occured loading user projects. Please reload and try again.</p>
+					</div>}
+					<ul>
+						{projects.map(project => (
+							<li 
+								key={project.fullName}
+								className={classNames({ selected: this.state.selectedProject === project.fullName })}
+								onClick={() => this.selectProject(project)}
+							>{project.fullName}
+							</li>
+						))}
+					</ul>
+					<div className="add-project">
+						<button onClick={() => this.openModal()}>Add Project</button>
+					</div>
 				</div>
 				<Modal
 					className="add-project-modal"
@@ -134,7 +136,7 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 					/>
 					<button onClick={() => this.closeModal()}>close</button>
 				</Modal>
-			</div>
+			</React.Fragment>
 		);
 	}
 

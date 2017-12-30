@@ -25,7 +25,7 @@ export class UserProfile extends React.Component<IUserProfileProps, IUserProfile
 		};
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		if (null == this.userController) {
 			this.userController = new UserController();
 		}
