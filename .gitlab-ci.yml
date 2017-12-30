@@ -1,0 +1,27 @@
+variables:
+  CONTAINER: frontend
+
+cache:
+  paths:
+    - node_modules/
+
+stages:
+  - build
+  - deploy
+
+build_node:
+  stage: build
+  artifacts:
+    paths:
+      - build
+  script:
+    - npm i
+    - npm run build
+
+deploy_sources:
+  stage: deploy
+  script:
+    - export file=$(node -p -e "require('crypto').createHash('md5').update('${CI_COMMIT_REF_NAME}').digest('hex')")
+    - echo "Commit ref name - '${CI_COMMIT_REF_NAME}' => 'build/branch/${file}.tar.gz'"
+    - cd build && tar -cvzf /tmp/${file}.tar.gz . && cd ..
+    - az storage blob upload -c $CONTAINER -f /tmp/${file}.tar.gz -n build/branch/${file}.tar.gz
