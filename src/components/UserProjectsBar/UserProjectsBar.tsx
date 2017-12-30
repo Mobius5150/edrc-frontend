@@ -164,16 +164,17 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 
 	private async selectNewProject(p: IProject) {
 		console.log('New project selected', p);
+		this.setState({...this.state, modalIsOpen: false, loading: true});
 
 		try {
 			const activated = await this.projectController.activateUserProject(this.props.username, p.providerId);
 			this.clearProjects();
-			this.setState({...this.state, loading: true, modalIsOpen: false});
 			this.loadUserProjects();
 			this.selectProject(activated);
 		} catch (e) {
 			console.error('Could not activate project');
 			console.trace(e);
+			this.setState({...this.state, loading: false});
 		}
 	}
 }
