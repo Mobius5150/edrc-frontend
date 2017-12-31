@@ -43,7 +43,7 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 		};
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		// if (null === this.state.user) {
 		// 	this.loadUser();
 		// } else 

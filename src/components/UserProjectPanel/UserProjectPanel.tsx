@@ -59,12 +59,13 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 		}
 	}
 
-	componentWillUpdate() {
-		const oldId = (this.props.username + '/' + this.props.project).toLowerCase();
+	componentWillReceiveProps(nextProps: any) {
+		const oldId = (nextProps.username + '/' + nextProps.project).toLowerCase();
 		const newId = (this.state.project ? this.state.project.fullName : '').toLowerCase();
+
 		if (oldId !== newId && !this.state.loading) {
-			this.username = this.props.username;
-			this.project = this.props.project;
+			this.username = nextProps.username;
+			this.project = nextProps.project;
 			this.setState({
 				...this.state,
 				project: null,
@@ -85,19 +86,15 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 	}
 
 	loadProject() {
-		if (!(this.state.project)) {
-			this.projectController.getUserProject(this.username, this.project, 1)
-				.then(project => this.setState({...this.state, project, loading: false}))
-				.catch(e => this.setState({...this.state, project: null, loading: false, projectError: e}));
-		}
+		this.projectController.getUserProject(this.username, this.project, 1)
+			.then(project => this.setState({...this.state, project, loading: false}))
+			.catch(e => this.setState({...this.state, project: null, loading: false, projectError: e}));
 	}
 
 	loadBuilds() {
-		if (!(this.state.builds)) {
-			this.buildController.getProjectBuilds(this.username, this.project, { filter: 'summary' }, 1)
-				.then(builds => this.setState({...this.state, builds, buildsLoading: false}))
-				.catch(e => this.setState({...this.state, builds: null, buildsLoading: false, buildsError: e}));
-		}
+		this.buildController.getProjectBuilds(this.username, this.project, { filter: 'summary' }, 1)
+			.then(builds => this.setState({...this.state, builds, buildsLoading: false}))
+			.catch(e => this.setState({...this.state, builds: null, buildsLoading: false, buildsError: e}));
 	}
 
 	render() {
