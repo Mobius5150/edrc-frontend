@@ -60,8 +60,8 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 	}
 
 	componentWillReceiveProps(nextProps: any) {
-		const oldId = (nextProps.username + '/' + nextProps.project).toLowerCase();
-		const newId = (this.state.project ? this.state.project.fullName : '').toLowerCase();
+		const oldId = (this.state.project ? this.state.project.fullName : '').toLowerCase();
+		const newId = (nextProps.username + '/' + nextProps.project).toLowerCase();
 
 		if (oldId !== newId && !this.state.loading) {
 			this.username = nextProps.username;
