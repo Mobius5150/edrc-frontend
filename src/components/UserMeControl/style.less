@@ -1,0 +1,79 @@
+@import "../../app";
+
+.user-profile {
+	float: right;
+
+    .user-profile-img {
+        @userProfileImageSize: 50px;
+        height: @userProfileImageSize;
+        width: @userProfileImageSize;
+        border-radius: 30px;
+		padding: 5px;
+		margin-right: 15px;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    &:not(.authed) {
+        .sign-in {
+            background-color: @signInButtonColor;
+            color: @signInButtonTextColor;
+            border: 0;
+            padding: 10px;
+            margin: 10px;
+            vertical-align: middle;
+            border-radius: 6px;
+            display: inline-block;
+            text-decoration: none;
+            
+            &:hover {
+                background-color: @signInButtonHoverColor;
+                color: @signInButtonHoverTextColor;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.menu {
+	background-color: @backgroundSecondary;
+	border: solid 1px @backgroundQuarternary;
+	border-radius: 5px;
+	position: absolute;
+	z-index:100;
+	top: 55px;
+	right: 15px;
+
+	&.hidden {
+		display:none;
+	}
+
+	ul {
+		padding: 5px 0px;
+		margin: 0px;
+	}
+	
+	.menu-item,
+	.menu-header {
+		list-style-type: none;
+		padding: 4px 15px;
+	}
+
+	.menu-item:hover {
+		background-color: @backgroundQuarternary;
+		cursor: pointer;
+	}
+
+	.menu-header {
+		padding-bottom: 0px;
+	}
+
+	.menu-divider {
+		list-style-type: none;
+		height: 1px;
+		margin: 8px 1px;
+		background-color: @backgroundQuarternary;
+	}
+}

@@ -32,7 +32,6 @@ body, html {
 .header {
 	background-color: @headerBackgroundColor;
 	color: @headerTextColor;
-	text-transform: uppercase;
 	height: @headerHeight;
 
 	.header-logo {
@@ -59,38 +58,6 @@ body, html {
 			float: left;
 			vertical-align: bottom;
 			border-radius: 6px;
-		}
-	}
-
-	.user-profile {
-		float: right;
-
-		img {
-			@userProfileImageSize: 50px;
-			height: @userProfileImageSize;
-			width: @userProfileImageSize;
-			border-radius: 30px;
-			padding: 5px;
-		}
-
-		&:not(.authed) {
-			.sign-in {
-				background-color: @signInButtonColor;
-				color: @signInButtonTextColor;
-				border: 0;
-				padding: 10px;
-				margin: 10px;
-				vertical-align: middle;
-				border-radius: 6px;
-				display: inline-block;
-				text-decoration: none;
-				
-				&:hover {
-					background-color: @signInButtonHoverColor;
-					color: @signInButtonHoverTextColor;
-					cursor: pointer;
-				}
-			}
 		}
 	}
 }

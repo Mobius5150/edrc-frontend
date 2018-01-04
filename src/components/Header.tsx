@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UserProfile } from './UserProfile';
+import { UserMeControl } from './UserMeControl/UserMeControl';
 import '../app.css';
 
 class User extends React.Component {
@@ -7,10 +7,10 @@ class User extends React.Component {
 		return (
 			<div className="header">
 				<div className="header-logo">
-					<h1>edrc</h1>
+					<h1>EDRC</h1>
 					<span className="status">alpha</span>
 				</div>
-			<UserProfile />
+			<UserMeControl />
 			</div>
 		);
 	}
