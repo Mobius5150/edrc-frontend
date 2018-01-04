@@ -31,7 +31,7 @@ my-project/
 ```
 
 Now, edit `edrc.yml` and add the following:
-```yml
+```yaml
 edrc:
   drc:
     - file: "my-design.brd"
@@ -44,7 +44,7 @@ What we have is almost enough to commit and have EDRC process the file, but we h
 > EDRC maintains a list of the design rules for a number of PCB houses so there's a good chance that we already have the design rules you'll need. [You can see the full list here](/design-rules-list).
 
 Edit `edrc.yml` and add the last line:
-```yml
+```yaml
 edrc:
   drc:
     - file: "my-design.brd"

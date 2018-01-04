@@ -2,8 +2,19 @@
 <html>
 <head>
   <title>{{title}}</title>
+  <link rel="stylesheet" type="text/css" href="/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.9.0/themes/prism-coy.min.css" integrity="sha256-OPRaIzpiEHvHfgydlnA/89k9d55T02hawuzgWygdLls=" crossorigin="anonymous" />
+ </head>
 </head>
 <body>
-  {{{contents}}}
+  <div class="header">
+    <div class="header-logo">
+      <h1>edrc</h1>
+      <span class="status">alpha</span>
+    </div>
+  </div>
+  <div class="doc-body">
+    {{{contents}}}
+  </div>
 </body>
 </html>

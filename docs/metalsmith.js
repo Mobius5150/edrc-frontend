@@ -7,6 +7,7 @@ const permalinks  = require('metalsmith-permalinks');
 const rootPath 	  = require('metalsmith-rootpath');
 const less 		  = require('mb-metalsmith-less');
 const ignore 	  = require('metalsmith-ignore');
+const metalsmithPrism = require('metalsmith-prism');
 
 const metadata = {
 	title: "EDRC Docs",
@@ -25,11 +26,12 @@ Metalsmith(__dirname)
 	.clean(true)
 	.use(less({ useDynamicSourceMap: true }))
 	.use(baseTitle())
-	.use(markdown())
+	.use(markdown( { langPrefix: 'language-' } ))
+	.use(metalsmithPrism())
 	.use(layouts({
 		engine: 'handlebars',
 		default: 'layout.html',
-		pattern: '**/(.html'
+		pattern: '**/*.html'
 	}))
 	.use(permalinks({
 		relative: false
