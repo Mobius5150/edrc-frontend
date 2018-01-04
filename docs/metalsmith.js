@@ -86,7 +86,7 @@ function baseTitle() {
 		Object.keys(files).forEach(fName => {
 			if (isText(fName)) {
 				const file = files[fName];
-				if (file.title !== metadata.title) {
+				if (file.title && file.title !== metadata.title) {
 					file.title = `${metadata.baseTitle}: ${file.title}`;
 				}
 			}
