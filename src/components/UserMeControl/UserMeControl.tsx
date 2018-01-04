@@ -39,12 +39,17 @@ export class UserMeControl extends React.Component <any, IUserMeControlState> {
 
 	renderDropdown() {
 		const userPhoto = this.state.user === null ? '' : this.state.user.github.profilePhotoUrl;
+		const userName = this.state.user === null ? '' : this.state.user.username;
 		return (
 			<React.Fragment>
-			<img src={userPhoto} className='user-profile-img' onClick={() => this.toggleMenuDropdown()}/>
+			<img 
+				src={userPhoto} 
+				className='user-profile-img' 
+				onClick={() => this.toggleMenuDropdown()}
+			/>
 			<div className={classNames({'menu': true, 'hidden': this.state.menuHidden})}>
 				<ul>
-					<li className='menu-header'>Signed in as <b>Jtfinlay</b></li>
+					<li className='menu-header'>Signed in as <b>{userName}</b></li>
 					<li className='menu-divider'/>
 					<li className='menu-item'>Settings</li>
 					<li className='menu-item'>Help</li>
