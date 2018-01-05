@@ -1,6 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 
+import { Link } from 'react-router-dom';
 import { UserController, IUser } from '../../controllers/User';
 import './style.css';
 
@@ -53,7 +54,14 @@ export class UserMeControl extends React.Component <any, IUserMeControlState> {
 					<li className='menu-divider'/>
 					<li className='menu-item'>Settings</li>
 					<li className='menu-item'>Help</li>
-					<li className='menu-item'>Sign out</li>
+					<Link to='/logout' target='_self'>
+						<li 
+							className='menu-item'
+							onClick={() => this.toggleMenuDropdown()}
+						>
+							Sign out
+						</li>
+					</Link>
 				</ul>
 			</div>
 			</React.Fragment>
@@ -66,7 +74,7 @@ export class UserMeControl extends React.Component <any, IUserMeControlState> {
 				{this.state.signedIn ? 
 					this.renderDropdown()
 				:
-					<a href="/auth/github" className="sign-in">Sign In</a>
+					<a href="/login" className="sign-in">Sign In</a>
 				}
 			</div>
 		);
