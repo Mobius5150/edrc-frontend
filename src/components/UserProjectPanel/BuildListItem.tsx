@@ -52,13 +52,13 @@ export class BuildListItem extends React.Component <IBuildListItemProps, IBuildL
 			switch (build.result) {
 				case 'succeeded':
 					tagText = 'pass';
-					classes['pass'] = true;
+					classes[tagText] = true;
 					break;
 				case 'failed':
 				case 'completed-with-errors':
 				default:
 					tagText = 'fail';
-					classes['fail'] = true;
+					classes[tagText] = true;
 					break;
 			}
 		}
