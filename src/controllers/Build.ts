@@ -1,6 +1,6 @@
 import { ObjectCache } from '../util/ObjectCache';
 import { Edrc, Client } from './Edrc';
-import { IProjectBuild, IBuildListResult, IBuildDetails, IBuildFileErrorsContract } from '../Models/Build';
+import { IProjectBuild, IBuildListResult, IPublicBuildDetails, IBuildFileErrorsContract } from '../Models/Build';
 
 export interface IGetProjectBuildParams {
 	filter?: 'summary' | 'builds' | 'branches' | null;
@@ -67,7 +67,7 @@ export class BuildController {
 		return result;
 	}
 
-	public async getBuildDetails(build: IProjectBuild): Promise<IBuildDetails | null> {
+	public async getBuildDetails(build: IProjectBuild): Promise<IPublicBuildDetails | null> {
 		const params = { user: build.userName, project: build.projectId, build: build.buildId };
 		
 		const buildResponse = await this.edrcClient({ path: 'api/v1/user/{user}/project/{project}/build/{build}/details', params });
@@ -116,7 +116,7 @@ export class BuildController {
 		return test;
 	}
 
-	private toBuildDetails(test: any): IBuildDetails {
+	private toBuildDetails(test: any): IPublicBuildDetails {
 		return test;
 	}
 
