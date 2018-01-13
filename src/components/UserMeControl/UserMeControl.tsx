@@ -45,18 +45,18 @@ export class UserMeControl extends React.Component <any, IUserMeControlState> {
 			<React.Fragment>
 			<img 
 				src={userPhoto} 
-				className='user-profile-img' 
+				className="user-profile-img"
 				onClick={() => this.toggleMenuDropdown()}
 			/>
-			<div className={classNames({'menu': true, 'hidden': this.state.menuHidden})}>
+			<div className={classNames({menu: true, hidden: this.state.menuHidden})}>
 				<ul>
-					<li className='menu-header'>Signed in as <b>{userName}</b></li>
-					<li className='menu-divider'/>
-					<li className='menu-item'>Settings</li>
-					<li className='menu-item'>Help</li>
-					<Link to='/logout' target='_self'>
+					<li className="menu-header">Signed in as <b>{userName}</b></li>
+					<li className="menu-divider"/>
+					<li className="menu-item">Settings</li>
+					<li className="menu-item">Help</li>
+					<Link to="/logout" target="_self">
 						<li 
-							className='menu-item'
+							className="menu-item"
 							onClick={() => this.toggleMenuDropdown()}
 						>
 							Sign out
@@ -65,7 +65,7 @@ export class UserMeControl extends React.Component <any, IUserMeControlState> {
 				</ul>
 			</div>
 			</React.Fragment>
-		)
+		);
 	}
 
 	render() {
