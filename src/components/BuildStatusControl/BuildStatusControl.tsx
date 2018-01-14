@@ -184,7 +184,7 @@ export class BuildStatusControl extends React.Component <IBuildStatusControlProp
 	private getEmbedExplanation() {
 		if (this.props.buildId) {
 			return `build #${this.props.buildId}`;
-		} if (this.props.branchRef) {
+		} else if (this.props.branchRef) {
 			return `branch ${this.props.branchRef}`;
 		} else if (this.props.branch) {
 			return `branch ${this.props.branch}`;
