@@ -19,6 +19,7 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-scripts-ts": "^2.8.0",
+    "react-snapshot": "^1.3.0",
     "rest": "^2.0.0"
   },
   "scripts": {
@@ -27,12 +28,21 @@
     "build-css": "node-less-chokidar src/ -o src/",
     "watch-css": "npm run build-css && node-less-chokidar src/ -o src/ --watch --recursive",
     "start": "react-scripts-ts start",
-    "build": "npm run build-css && react-scripts-ts build && npm run build-docs",
+    "build": "npm run build-css && react-scripts-ts build && npm run build-docs && react-snapshot",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "postinstall": "npm run build"
   },
   "proxy": "http://localhost:3001",
+  "reactSnapshot": {
+    "include": [
+    ],
+    "exclude": [
+      "/login",
+      "/docs",
+      "/docs/*"
+    ]
+  },
   "devDependencies": {
     "@types/jest": "^21.1.5",
     "@types/node": "^8.0.47",
