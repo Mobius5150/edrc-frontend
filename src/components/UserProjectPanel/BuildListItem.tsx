@@ -8,6 +8,7 @@ import { BuildStatusControl } from '../BuildStatusControl/index';
 
 interface IBuildListItemProps {
 	build: IProjectBuild;
+	isRef: boolean;
 	header: string;
 }
 
@@ -60,16 +61,31 @@ export class BuildListItem extends React.Component <IBuildListItemProps, IBuildL
 			}
 		}
 
-		return (
-			<BuildStatusControl
-				owner={this.props.build.userName}
-				project={this.props.build.projectId}
-				enableEmbed={true}
-				enableEmbedText={false}
-				hoverText={tagText}
-				compact={true}
-			/>
-		);
+		if (this.props.isRef) {
+			return (
+				<BuildStatusControl
+					owner={this.props.build.userName}
+					project={this.props.build.projectId}
+					branchRef={this.props.build.typeRef}
+					enableEmbed={true}
+					enableEmbedText={false}
+					hoverText={tagText}
+					compact={true}
+				/>
+			);
+		} else {
+			return (
+				<BuildStatusControl
+					owner={this.props.build.userName}
+					project={this.props.build.projectId}
+					buildId={this.props.build.buildId}
+					enableEmbed={true}
+					enableEmbedText={false}
+					hoverText={tagText}
+					compact={true}
+				/>
+			);
+		}
 	}
 
 	renderExpanded() {

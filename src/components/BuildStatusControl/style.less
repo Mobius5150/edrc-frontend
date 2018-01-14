@@ -33,7 +33,8 @@
 .embed-status-modal {
 	@elementPadding: 10px;
 
-    background-color: @backgroundSecondary;
+	background-color: @backgroundSecondary;
+	color: @foregroundPrimary;
     padding: @elementPadding;
 	border-radius: 4px;
 	margin: 50px auto;
@@ -43,10 +44,11 @@
 		color: @foregroundPrimary;
 		margin: 0;
 		padding: 0;
+		padding-bottom: @elementPadding;
 	}
 	
 	button {
-		margin: 0 auto;
+		margin: @elementPadding auto 0 auto;
 	}
 
 	& > div {
@@ -59,7 +61,7 @@
 		background-color: @foregroundPrimary;
 		color: @backgroundPrimary;
 		border-radius: @elementPadding/2;
-		margin: @elementPadding 0;
+		margin: @elementPadding 0 0 0;
 		font-size: 1em;
 
 		pre {
@@ -70,6 +72,25 @@
 			white-space: -pre-wrap;
 			white-space: -o-pre-wrap;
 			word-wrap: break-word;
+		}
+	}
+
+	.embed-doc {
+		margin: 0 -@elementPadding;
+		background-color: @backgroundPrimary;
+		color: @foregroundPrimary;
+		padding: @elementPadding @elementPadding;
+	}
+
+	a {
+		color: @foregroundPrimary;
+
+		&:visited {
+			color: @foregroundSecondary;
+		}
+
+		&:hover {
+			color: @foregroundTertiary;
 		}
 	}
 }

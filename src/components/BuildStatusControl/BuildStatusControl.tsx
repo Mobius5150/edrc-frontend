@@ -10,7 +10,7 @@ interface IBuildStatusControlState {
 }
 
 interface IBuildStatusControlProps {
-	ref?: string;
+	branchRef?: string;
 	branch?: string;
 	buildId?: string;
 	enableEmbed?: boolean;
@@ -56,9 +56,9 @@ export class BuildStatusControl extends React.Component <IBuildStatusControlProp
 			generatedUrl = `/api/v1/user/${props.owner}/project/${props.project}/build/${props.buildId}/img/status`;
 		} else {
 			generatedUrl = `/api/v1/user/${props.owner}/project/${props.project}/img/status`;
-			if (props.ref) {
+			if (props.branchRef) {
 				hasQuery = true;
-				generatedUrl = generatedUrl + '?ref=' + encodeURIComponent(props.ref);
+				generatedUrl = generatedUrl + '?ref=' + encodeURIComponent(props.branchRef);
 			} else if (props.branch) {
 				hasQuery = true;
 				generatedUrl = generatedUrl + '?branch=' + encodeURIComponent(props.branch);
@@ -106,6 +106,9 @@ export class BuildStatusControl extends React.Component <IBuildStatusControlProp
 								contentLabel="Embed Build Status"
 							>
 								<h1>Embed Build Status</h1>
+								<div className="embed-doc">
+									Embed this code in another web page to show the live status of {this.getEmbedExplanation()}. <a href="/docs/">Read the docs for more details.</a>
+								</div>
 								<div>
 									Format:&nbsp;
 									<select onChange={(e) => this.changeEmbedPreviewFormat(e)}>
@@ -125,7 +128,6 @@ export class BuildStatusControl extends React.Component <IBuildStatusControlProp
 								<div className="embed-source">
 									<pre>{this.generateEmbedPreview(imageUrl as string)}</pre>
 								</div>
-								{/* TODO: Add a link to the docs on embedding */}
 								<button onClick={() => this.closeModal()}>close</button>
 							</Modal>}
 					</div>
@@ -176,6 +178,18 @@ export class BuildStatusControl extends React.Component <IBuildStatusControlProp
 			case 'markdown':
 			default:
 				return `[![${title}](${imageUrl})](${linkUrl})`;
+		}
+	}
+
+	private getEmbedExplanation() {
+		if (this.props.buildId) {
+			return `build #${this.props.buildId}`;
+		} if (this.props.branchRef) {
+			return `branch ${this.props.branchRef}`;
+		} else if (this.props.branch) {
+			return `branch ${this.props.branch}`;
+		} else {
+			return `this project`;
 		}
 	}
 }
