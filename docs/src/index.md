@@ -78,6 +78,6 @@ And that's it! Sit back and relax as EDRC queues and runs your design rule check
 Now that you've setup EDRC and had your first build run it's time to configure EDRC to do exactly what you want. Here's a few starting points:
 
  - [Configure a custom DRU file](/setup-custom-dru)
- - [Show off your build status in your repo](/setup-build-tag)
+ - [Show off your build status in your repo](/setup-build-status-image)
  - [Embed images from your build on a website or wiki](/setup-build-images)
  - [Automatically generate gerber files for your PCB](/setup-gerber-generation)

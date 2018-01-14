@@ -1,11 +1,120 @@
 @import "../../src/index";
 
+@font-face { 
+	font-family: "Ionicons"; 
+	src: url("/fonts/ionicons.eot?v=2.0.0"); 
+	src: url("/fonts/ionicons.eot?v=2.0.0#iefix") format("embedded-opentype"), 
+		url("/fonts/ionicons.ttf?v=2.0.0") format("truetype"),
+		url("/fonts/ionicons.woff?v=2.0.0") format("woff"),
+		url("/fonts/ionicons.svg?v=2.0.0#Ionicons") format("svg"); font-weight: normal; font-style: normal; }
+
+@elementPadding: 10px;
+
 body {
     color: @backgroundPrimary;
     background-color: @foregroundPrimary;
 }
 
+[class*="ion-"] {
+    font-family: "Ionicons";
+}
+
+.ion-link::before {
+    content: "\f1fe";
+}
+
 .doc-body {
     max-width: 800px;
     margin: auto;
+
+    img {
+        display: block;
+        margin: auto;
+    }
+
+    .left-align {
+        img {
+            margin: 0;
+        }
+    }
+
+    .icon {
+        display: inline-block;
+    }
+
+    a {
+        color: @backgroundQuarternary;
+
+        &:visited {
+            color: @backgroundQuarternary;
+        }
+
+        &:active {
+            color: @backgroundSecondary;
+        }
+
+        &:hover {
+            color: @backgroundPrimary;
+        }
+    }
+
+    blockquote {
+        font-style: italic;
+        color: @backgroundTertiary;
+        background-color: fade(@foregroundTertiary, 10%);
+
+        &, p {
+            margin: 0;
+            padding: @elementPadding;
+        }
+    }
+
+    p code {
+        background-color: fade(@backgroundPrimary, 5%);
+        padding: 3px 5px 1px 5px;
+    }
+
+    pre:not([class*="language-"]) > code {
+        background-color: fade(@backgroundPrimary, 5%);
+        padding: @elementPadding;
+        display: block;
+    }
+
+    pre[class*="language-"] > code {
+        font-size: 0.9em;
+    }
+
+    table {
+        thead th {
+            padding: 0 20px 0 0;
+            text-align: left;
+
+            &:last-child {
+                padding: 0;
+            }
+        }
+
+        tbody tr {
+            td {
+                &:last-child {
+                    a {
+                        visibility: hidden;
+                    }
+                }
+            }
+
+
+            &:hover {
+                td a {
+                    visibility: visible;
+                }
+            }
+        }
+    }
+
+    iframe {
+        border: 0;
+        width: 100%;
+        min-height: 350px;
+    }
 }
