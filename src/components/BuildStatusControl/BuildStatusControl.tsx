@@ -111,9 +111,9 @@ export class BuildStatusControl extends React.Component <IBuildStatusControlProp
 								</div>
 								<div>
 									Format:&nbsp;
-									<select onChange={(e) => this.changeEmbedPreviewFormat(e)}>
+									<select onChange={(e) => this.changeEmbedPreviewFormat(e)} defaultValue={BuildStatusControl.embedPreviewFormat}>
 										{Object.keys(BuildStatusControl.embedPreviewFormats).map(id => (
-											<option key={id} value={id} selected={BuildStatusControl.embedPreviewFormat === id}>
+											<option key={id} value={id}>
 												{BuildStatusControl.embedPreviewFormats[id]}
 											</option>
 										))}
