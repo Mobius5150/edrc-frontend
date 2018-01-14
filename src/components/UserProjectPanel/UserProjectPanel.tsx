@@ -5,6 +5,7 @@ import './style.css';
 import { IProject } from '../../Models/Project';
 import { IBuildListResult } from '../../Models/Build';
 import { BuildListItem } from './BuildListItem';
+import { BuildStatusControl } from '../BuildStatusControl';
 
 interface IUserProjectsPanelProps {
 	username: string;
@@ -113,7 +114,15 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 		const project: IProject = this.state.project;
 		return (
 			<div className="project">
-				<h2>{project.fullName}</h2>
+				<div className="project-header">
+					<h2>{project.fullName}</h2>
+					<BuildStatusControl
+						owner={project.ownerName}
+						project={project.name}
+						enableEmbed={true}
+						enableEmbedText={true}
+					/>
+				</div>
 				{this.renderBuilds()}
 			</div>
 		);

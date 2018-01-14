@@ -4,6 +4,7 @@ import { IProjectBuild } from '../../Models/Build';
 import { BuildDetails } from './BuildDetails';
 import classNames from 'classnames';
 import * as moment from 'moment';
+import { BuildStatusControl } from '../BuildStatusControl/index';
 
 interface IBuildListItemProps {
 	build: IProjectBuild;
@@ -45,26 +46,29 @@ export class BuildListItem extends React.Component <IBuildListItemProps, IBuildL
 	renderBuildStatus() {
 		const build = this.props.build;
 		let tagText: string = build.status;
-		const classes = { 'build-status': true };
-		classes[`status-${build.status}`] = true;
 
 		if (build.status === 'completed') {
 			switch (build.result) {
 				case 'succeeded':
 					tagText = 'pass';
-					classes[tagText] = true;
 					break;
 				case 'failed':
 				case 'completed-with-errors':
 				default:
 					tagText = 'fail';
-					classes[tagText] = true;
 					break;
 			}
 		}
 
 		return (
-			<span className={classNames(classes)}>{tagText}</span>
+			<BuildStatusControl
+				owner={this.props.build.userName}
+				project={this.props.build.projectId}
+				enableEmbed={true}
+				enableEmbedText={false}
+				hoverText={tagText}
+				compact={true}
+			/>
 		);
 	}
 
