@@ -53,9 +53,9 @@ export class BuildStatusControl extends React.Component <IBuildStatusControlProp
 		let generatedUrl = '';
 		let hasQuery = false;
 		if (props.buildId) {
-			generatedUrl = `/api/v1/user/${props.owner}/project/${props.project}/build/${props.buildId}/img/status`;
+			generatedUrl = `/api/v1/user/${props.owner}/project/${props.project}/build/${props.buildId}/img/status.svg`;
 		} else {
-			generatedUrl = `/api/v1/user/${props.owner}/project/${props.project}/img/status`;
+			generatedUrl = `/api/v1/user/${props.owner}/project/${props.project}/img/status.svg`;
 			if (props.branchRef) {
 				hasQuery = true;
 				generatedUrl = generatedUrl + '?ref=' + encodeURIComponent(props.branchRef);
