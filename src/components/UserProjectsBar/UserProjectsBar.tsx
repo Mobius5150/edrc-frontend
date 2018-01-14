@@ -3,12 +3,12 @@ import { UserController, IUser } from '../../controllers/User';
 import { ProjectController } from '../../controllers/Project';
 import * as Modal from 'react-modal';
 import classNames from 'classnames';
-
-import './style.css';
 import { IProject } from '../../Models/Project';
 import { UserProjectsList } from '../UserProjectsList/UserProjectsLists';
+import { IGenericRouteProps } from '../../util/Route';
+import './style.css';
 
-interface IUserProjectsBarProps {
+interface IUserProjectsBarProps extends IGenericRouteProps {
 	username: string;
 	project: string;
 	onProjectSelected?: (p: IProject) => void;
@@ -125,6 +125,7 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 	private selectProject(project: IProject) {
 		if (this.state.selectedProject !== project.fullName) {
 			this.setState({...this.state, selectedProject: project.fullName });
+			this.props.history.push(`/g/${project.fullName}`);
 			if (typeof this.props.onProjectSelected === 'function') {
 				this.props.onProjectSelected(project);
 			}
