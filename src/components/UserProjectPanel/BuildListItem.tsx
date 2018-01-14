@@ -8,7 +8,7 @@ import { BuildStatusControl } from '../BuildStatusControl/index';
 
 interface IBuildListItemProps {
 	build: IProjectBuild;
-	isRef: boolean;
+	fromGitRef: boolean;
 	header: string;
 }
 
@@ -61,7 +61,7 @@ export class BuildListItem extends React.Component <IBuildListItemProps, IBuildL
 			}
 		}
 
-		if (this.props.isRef) {
+		if (this.props.fromGitRef) {
 			return (
 				<BuildStatusControl
 					owner={this.props.build.userName}
