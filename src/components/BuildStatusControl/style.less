@@ -29,3 +29,48 @@
 		}
 	}
 }
+
+.embed-status-modal {
+	@elementPadding: 10px;
+
+    background-color: @backgroundSecondary;
+    padding: @elementPadding;
+	border-radius: 4px;
+	// display: inline-block;
+	margin: 50px auto;
+	width: 500px;
+
+    h1 {
+		color: @foregroundPrimary;
+		margin: 0;
+		padding: 0;
+	}
+	
+	button {
+		margin: 0 auto;
+	}
+
+	& > div {
+		padding: @elementPadding 0 0 0;
+		margin: 0;
+	}
+
+	.embed-source {
+		padding: @elementPadding;
+		background-color: @foregroundPrimary;
+		color: @backgroundPrimary;
+		border-radius: @elementPadding/2;
+		margin: @elementPadding 0;
+		font-size: 1em;
+
+		pre {
+			padding: 0;
+			margin: 0;
+			white-space: pre-wrap;
+			white-space: -moz-pre-wrap;
+			white-space: -pre-wrap;
+			white-space: -o-pre-wrap;
+			word-wrap: break-word;
+		}
+	}
+}
