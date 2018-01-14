@@ -3,15 +3,21 @@
 @build-padding: 10px;
 @build-radius: 3px;
 
-.project, 
-.project-builds {
+.project {
 	padding: 20px;
 	width: 100%;
 	overflow: auto;
 	background-color: #1e1e1e;
 
-	& > h2 {
-		margin-top: 0px;
+	.project-header {
+		h2 {
+			margin-top: 0px;
+			display: inline-block;
+		}
+
+		.build-status {
+			margin-left: 15px;
+		}
 	}
 
 	.build-section {
@@ -55,26 +61,9 @@
 					margin: 0;
 					display: inline-block;
 				}
-				
+
 				.build-status {
-					background-color: @build-color-default;
-					color: @build-color-default-text;
-					display: inline-block;
-					border-radius: 5px;
-					padding: 1px 5px;
-					margin: 3px 10px;
-					text-transform: uppercase;
-					font-size: 0.9em;
-
-					&.pass {
-						background-color: @build-color-pass;
-						color: #fff;
-					}
-
-					&.fail {
-						background-color: @build-color-fail;
-						color: #fff;
-					}
+					margin-left: 10px;
 				}
 			}
 

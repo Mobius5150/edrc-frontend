@@ -26,17 +26,18 @@ export interface IBuildListResult {
 	branches?: { [branchName: string]: IProjectBuild };
 }
 
-export interface IBuildDetails {
+export interface IPublicBuildDetails {
 	status: string;
 	errorMessage: string;
 	errorDetails: string;
-	FileBuildResults: IBuildFileSummary[];
+	FileBuildResults: IPublicBuildFileSummary[];
 }
 
-export interface IBuildFileSummary {
+export interface IPublicBuildFileSummary {
 	filename: string;
 	normalizedFilename: string;
-	resultsBlobUrl: string;
+	resultsUrl: string;
+	imageUrl: string;
 	errorMessage: string;
 	errorCode: string;
 	approvedErrorCount: number;

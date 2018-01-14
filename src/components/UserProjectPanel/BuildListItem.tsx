@@ -4,9 +4,11 @@ import { IProjectBuild } from '../../Models/Build';
 import { BuildDetails } from './BuildDetails';
 import classNames from 'classnames';
 import * as moment from 'moment';
+import { BuildStatusControl } from '../BuildStatusControl/index';
 
 interface IBuildListItemProps {
 	build: IProjectBuild;
+	fromGitRef: boolean;
 	header: string;
 }
 
@@ -45,27 +47,45 @@ export class BuildListItem extends React.Component <IBuildListItemProps, IBuildL
 	renderBuildStatus() {
 		const build = this.props.build;
 		let tagText: string = build.status;
-		const classes = { 'build-status': true };
-		classes[`status-${build.status}`] = true;
 
 		if (build.status === 'completed') {
 			switch (build.result) {
 				case 'succeeded':
 					tagText = 'pass';
-					classes[tagText] = true;
 					break;
 				case 'failed':
 				case 'completed-with-errors':
 				default:
 					tagText = 'fail';
-					classes[tagText] = true;
 					break;
 			}
 		}
 
-		return (
-			<span className={classNames(classes)}>{tagText}</span>
-		);
+		if (this.props.fromGitRef) {
+			return (
+				<BuildStatusControl
+					owner={this.props.build.userName}
+					project={this.props.build.projectId}
+					branchRef={this.props.build.typeRef}
+					enableEmbed={true}
+					enableEmbedText={false}
+					hoverText={tagText}
+					compact={true}
+				/>
+			);
+		} else {
+			return (
+				<BuildStatusControl
+					owner={this.props.build.userName}
+					project={this.props.build.projectId}
+					buildId={this.props.build.buildId}
+					enableEmbed={true}
+					enableEmbedText={false}
+					hoverText={tagText}
+					compact={true}
+				/>
+			);
+		}
 	}
 
 	renderExpanded() {

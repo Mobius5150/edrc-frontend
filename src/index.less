@@ -84,6 +84,15 @@ button {
 	}
 }
 
+.ReactModal__Overlay--after-open {
+	background-color: fade(@backgroundQuarternary, 70%) !important;
+
+	.ReactModal__Content--after-open {
+		border: 5px solid @backgroundPrimary;
+		outline: none;
+	}
+}
+
 @keyframes loading {
 	to { transform: rotate(360deg); }
 }

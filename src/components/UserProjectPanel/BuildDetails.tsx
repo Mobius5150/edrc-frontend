@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './style.css';
-import { IProjectBuild, IBuildDetails, IBuildFileSummary, IBuildFileErrors, IBuildFileErrorsContract } from '../../Models/Build';
+import { IProjectBuild, IPublicBuildDetails, IPublicBuildFileSummary, IBuildFileErrors, IBuildFileErrorsContract } from '../../Models/Build';
 import { BuildController } from '../../controllers/Build';
 import classNames from 'classnames';
 
@@ -11,7 +11,7 @@ interface IBuildDetailsProps {
 interface IBuildDetailsState {
 	error: Error | null;
 	loading: boolean;
-	details: IBuildDetails | null;
+	details: IPublicBuildDetails | null;
 	selectedFileName: string | null;
 	currentFileErrors: IBuildFileSortedErrors | null;
 	loadCurrentFileError: Error | null;
@@ -262,7 +262,7 @@ export class BuildDetails extends React.Component <IBuildDetailsProps, IBuildDet
 		this.setState({...this.state});
 	}
 
-	selectFile(file: IBuildFileSummary): void {
+	selectFile(file: IPublicBuildFileSummary): void {
 		const fileName = file.normalizedFilename;
 		if (this.fileErrors[fileName]) {
 			this.setState({ ...this.state, selectedFileName: fileName, currentFileErrors: this.fileErrors[fileName] });

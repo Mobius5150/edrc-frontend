@@ -5,6 +5,7 @@ import './style.css';
 import { IProject } from '../../Models/Project';
 import { IBuildListResult } from '../../Models/Build';
 import { BuildListItem } from './BuildListItem';
+import { BuildStatusControl } from '../BuildStatusControl';
 
 interface IUserProjectsPanelProps {
 	username: string;
@@ -113,7 +114,15 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 		const project: IProject = this.state.project;
 		return (
 			<div className="project">
-				<h2>{project.fullName}</h2>
+				<div className="project-header">
+					<h2>{project.fullName}</h2>
+					<BuildStatusControl
+						owner={project.ownerName}
+						project={project.name}
+						enableEmbed={true}
+						enableEmbedText={true}
+					/>
+				</div>
 				{this.renderBuilds()}
 			</div>
 		);
@@ -177,7 +186,7 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 
 		return (
 			<div className="builds">
-				{Object.keys(branches).map(b => <BuildListItem build={branches[b]} header={b} key={b} />)}
+				{Object.keys(branches).map(b => <BuildListItem build={branches[b]} header={b} key={b} fromGitRef={true} />)}
 			</div>
 		);
 	}
@@ -193,7 +202,7 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 
 		return (
 			<div className="builds">
-				{builds.map(b => <BuildListItem build={b} header={b.buildId} key={b.buildId} />)}
+				{builds.map(b => <BuildListItem build={b} header={b.buildId} key={b.buildId} fromGitRef={false} />)}
 			</div>
 		);
 	}
