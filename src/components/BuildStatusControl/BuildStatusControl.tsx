@@ -107,7 +107,7 @@ export class BuildStatusControl extends React.Component <IBuildStatusControlProp
 							>
 								<h1>Embed Build Status</h1>
 								<div className="embed-doc">
-									Embed this code in another web page to show the live status of {this.getEmbedExplanation()}. <a href="/docs/setup-build-images">Read the docs for more details.</a>
+									Embed this code in another web page to show the live status of {this.getEmbedExplanation()}. <a href="/docs/setup-build-status-image">Read the docs for more details.</a>
 								</div>
 								<div>
 									Format:&nbsp;
