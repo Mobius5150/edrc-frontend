@@ -59,6 +59,16 @@ export class ProjectController {
 		}
 	}
 
+	public async deactivateUserProject(userIdOrName: string, projectName: string): Promise<void> {
+		const params = { user: userIdOrName, project: projectName };
+		const projectResponse = await this.edrcClient({ method: 'DELETE', path: 'api/v1/user/{user}/project/{project}', params });
+		if (projectResponse.status.code !== 204) {
+			throw new Error(`DeactivateUserProject response ${projectResponse.status.text}`);
+		}
+
+		ProjectController.Cache.removeObject(`${userIdOrName}/${projectName}`);
+	}
+
 	public releaseProjectRef(fullName: string) {
 		ProjectController.Cache.releaseObject(fullName);
 	}

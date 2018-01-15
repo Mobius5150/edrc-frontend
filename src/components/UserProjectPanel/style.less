@@ -10,6 +10,8 @@
 	background-color: #1e1e1e;
 
 	.project-header {
+		position: relative;
+
 		h2 {
 			margin-top: 0px;
 			display: inline-block;
@@ -17,6 +19,22 @@
 
 		.build-status {
 			margin-left: 15px;
+		}
+
+		.project-settings {
+			position: absolute;
+			top: 0;
+			right: 0;
+			display: inline-block;
+			cursor: pointer;
+			font-size: 1.8em;
+			line-height: 100%;
+			height: 100%;
+			vertical-align: middle;
+
+			&:hover {
+				color: @foregroundSecondary;
+			}
 		}
 	}
 

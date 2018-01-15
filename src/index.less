@@ -84,6 +84,25 @@ button {
 	}
 }
 
+.settings {
+	.button-dangerous {
+		background-color: #b90000;
+		border-color: #b90000;
+
+		&:hover {
+			background-color: #d40000;
+			border-color: #d40000;
+		}
+	}
+
+	button:disabled,
+	button[disabled] {
+		background-color: #4d4d4d;
+		border-color: #4d4d4d;
+		cursor: not-allowed;
+	}
+}
+
 .ReactModal__Overlay--after-open {
 	background-color: fade(@backgroundQuarternary, 70%) !important;
 

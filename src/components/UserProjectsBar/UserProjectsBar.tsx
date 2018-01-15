@@ -43,33 +43,17 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 		};
 	}
 
+	public async refreshProjects() {
+		await this.clearProjects();
+		this.loadUserProjects();
+	}
+
 	componentDidMount() {
-		// if (null === this.state.user) {
-		// 	this.loadUser();
-		// } else 
 		if (null === this.state.projects) {
 			this.loadUserProjects();
 		} else {
 			this.setState({...this.state, loading: false});
 		}
-	}
-
-	componentWillUpdate() {
-		// const oldUserId = this.props.username;
-		// const newUserId = this.state.user ? this.state.user.id : '';
-		// if (oldUserId !== newUserId) {
-		// 	this.username = this.props.username;
-		// 	this.setState({
-		// 		...this.state,
-		// 		user: null,
-		// 		signedIn: false,
-		// 		projects: null,
-		// 		loading: true,
-		// 	});
-
-		// 	this.loadUser();
-		// 	this.loadUserProjects();
-		// }
 	}
 
 	componentWillUnmount() {
@@ -80,19 +64,9 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 		this.clearProjects();
 	}
 
-	// loadUser() {
-	// 	if (!(this.state.user)) {
-	// 		this.userController.getUser(this.username)
-	// 			.then(user => { 
-	// 				this.setState({...this.state, user, signedIn: user !== null});
-	// 				this.loadUserProjects();
-	// 			})
-	// 			.catch(e => this.setState({...this.state, user: null, signedIn: false}));
-	// 	}
-	// }
-
 	loadUserProjects() {
 		if (!(this.state.projects)) {
+			this.setState({ ...this.state, loading: true });
 			this.projectController.getUserProjects(this.username, { filter: 'activated' }, 1)
 				.then(projects => this.setState({...this.state, projects, loading: false}))
 				.catch(e => this.setState({...this.state, user: null, signedIn: false, loading: false}));
@@ -140,11 +114,11 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 		);
 	}
 
-	openModal() {
+	private openModal() {
 		this.setState({...this.state, modalIsOpen: true});
 	}
 
-	closeModal() {
+	private closeModal() {
 		this.setState({...this.state, modalIsOpen: false});
 	}
 
@@ -157,15 +131,20 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 		}
 	}
 
-	private clearProjects() {
-		if (null !== this.state.projects) {
-			this.projectController.releaseProjectRefs(this.state.projects);
-			this.setState({...this.state, projects: null});
-		}
+	private clearProjects(): Promise<void> {
+		return new Promise<void>((resolve, reject) => {
+			if (null !== this.state.projects) {
+				this.projectController.releaseProjectRefs(this.state.projects);
+				this.setState({...this.state, projects: null, selectedProject: null}, () => {
+					resolve();
+				});
+			} else {
+				resolve();
+			}
+		});
 	}
 
 	private async selectNewProject(p: IProject) {
-		console.log('New project selected', p);
 		this.setState({...this.state, modalIsOpen: false, loading: true});
 
 		try {
@@ -174,8 +153,6 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 			this.loadUserProjects();
 			this.selectProject(activated);
 		} catch (e) {
-			console.error('Could not activate project');
-			console.trace(e);
 			this.setState({...this.state, loading: false});
 		}
 	}
