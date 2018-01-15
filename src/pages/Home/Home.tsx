@@ -34,10 +34,10 @@ class Home extends React.Component <IGenericRouteProps, IHomeState> {
 	}
 
 	render() {
-		// if (this.state.loading) {
-		// 	// TODO: show a loader here while loading
-		// 	return (<div className="loading" />);
-		// }
+		if (this.state.signedIn && this.state.loading) {
+			// TODO: show a loader here while loading
+			return (<div className="loading" />);
+		}
 
 		if (this.state.signedIn) {
 			const params: any = {};
