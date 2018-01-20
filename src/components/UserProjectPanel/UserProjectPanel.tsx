@@ -148,7 +148,7 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 								className="button-dangerous"
 								onClick={(e) => this.deactivateProjectClicked(e)}
 							>
-								Deactive Project
+								Disable Project
 							</button>
 						</div>
 					</div>

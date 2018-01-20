@@ -133,7 +133,7 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 
 	private clearProjects(): Promise<void> {
 		return new Promise<void>((resolve, reject) => {
-			if (null !== this.state.projects) {
+			if (this.state.projects) {
 				this.projectController.releaseProjectRefs(this.state.projects);
 				this.setState({...this.state, projects: null, selectedProject: null}, () => {
 					resolve();
