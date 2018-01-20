@@ -82,3 +82,25 @@
 		background-color: @backgroundQuarternary;
 	}
 }
+
+.frontend-version {
+	font-family: Courier New, Courier, monospace;
+
+	span {
+		float: right;
+	}
+
+	.clear-frontend {
+		display: none;
+	}
+
+	&:hover .clear-frontend {
+		float: right;
+		display: block;
+		color: red;
+	}
+
+	&:hover .frontend-version-icon {
+		display: none;
+	}
+}
