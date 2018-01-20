@@ -61,13 +61,12 @@ function linksFromSiteUrl() {
 			if (isText(fName)) {
 				const file = files[fName];
 				file.contents = new Buffer(file.contents.toString().replace(/href\s*=\s*\"(?!\S+\:)([^"]+)\"/g, function (match, p1) {
-					const resolved = url.resolve(fName, p1);
-					let uri = metadata.siteurl + resolved;
-					if (resolved[0] === '/') {
-						uri = metadata.siteurl + resolved.substr(1);
+					if (p1[0] === '/') {
+						p1 = p1.substr(1);
 					}
 
-					return ` href="${uri}" `;
+					const resolved = url.resolve(metadata.siteurl, p1);
+					return ` href="${resolved}" `;
 				}));
 			}
 		});
