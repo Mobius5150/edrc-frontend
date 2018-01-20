@@ -8,12 +8,8 @@ class User extends React.Component {
 		return (
 			<div className="header">
 				<div className="header-logo">
-					<h1>EDRC</h1>
+					<h1><Link to="/">EDRC</Link></h1>
 					<span className="status">alpha</span>
-				</div>
-				<div className="links">
-					<Link to="/">Home</Link>
-					<Link to="/docs" target="_self">Documentation</Link>
 				</div>
 				<UserMeControl />
 			</div>

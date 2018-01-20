@@ -9,16 +9,40 @@
 <body>
 	<div class="header">
 		<div class="header-logo">
-			<h1>EDRC</h1>
+			<h1><a href=".../">EDRC</a></h1>
 			<span class="status">alpha</span>
-		</div>
-		<div class="links">
-			<a href=".../">Home</a>
-			<a target="_self" href="/">Documentation</a>
 		</div>
 	</div>
 	<div class="doc-body">
-		{{{contents}}}
+		<div class="sidebar">
+			<h1><a href="/">Documentation</a></h1>
+			<div class="links">
+				<h2>Guides</h2>
+				<ul>
+					{{#each collections.guides}}
+						<li>
+							<a href="/{{path}}">
+								{{#if linkTitle}}
+									{{linkTitle}}
+								{{else}}
+									{{baseTitle}}
+								{{/if}}</a>
+						</li>
+					{{/each}}
+				</ul>
+				<h2>Reference</h2>
+				<ul>
+					{{#each collections.reference}}
+						<li>
+							<a href="/{{path}}">{{#if linkTitle}}{{linkTitle}}{{else}}{{baseTitle}}{{/if}}</a>
+						</li>
+					{{/each}}
+				</ul>
+			</div>
+		</div>
+		<div class="doc">
+			{{{contents}}}
+		</div>
 	</div>
 </body>
 </html>

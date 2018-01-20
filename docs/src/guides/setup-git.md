@@ -1,3 +1,7 @@
+---
+title: Setup Git
+---
+
 # Setup Git and Gitlab
 This tutorial will show you how to use git and Github to store, version, and collaborate on Eagle CAD designs.
 

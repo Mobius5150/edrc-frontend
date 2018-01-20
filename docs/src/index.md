@@ -1,3 +1,8 @@
+---
+title: Getting Started with EDRC
+linkTitle: Getting Started
+---
+
 # EDRC
 EDRC is a tool that helps you collaborate with confidence on Eagle CAD hardware designs. Eagle allows you to easily:
 
@@ -9,7 +14,7 @@ EDRC is a tool that helps you collaborate with confidence on Eagle CAD hardware 
 If you've ever used automated software build/test systems you'll feel right at home setting up EDRC.
 
 ## Adding EDRC to your project
-To start with, you'll need to ensure that your board and schematic files are committed into a git repository and uploaded to Github. [Check out our guide for using eagle with git and Github](/setup-git) if you haven't already.
+To start with, you'll need to ensure that your board and schematic files are committed into a git repository and uploaded to Github. [Check out our guide for using eagle with git and Github](/guides/setup-git) if you haven't already.
 
 To start, your directory structure probably looks something like this:
 ```
@@ -41,7 +46,7 @@ This simple configuration file tells EDRC to run a design rule check (DRC) on th
 
 What we have is almost enough to commit and have EDRC process the file, but we haven't told EDRC what design rules to check against. Let's do that. For now, we're going to use the design rules for OSHPark.
 
-> EDRC maintains a list of the design rules for a number of PCB houses so there's a good chance that we already have the design rules you'll need. [You can see the full list here](/design-rules-list).
+> EDRC maintains a list of the design rules for a number of PCB houses so there's a good chance that we already have the design rules you'll need. [You can see the full list here](/reference/design-rules-list).
 
 Edit `edrc.yml` and add the last line:
 ```yaml
@@ -51,7 +56,7 @@ edrc:
       dru: "oshpark-2layer"
 ```
 
-This will use the built-in [OSHPark 2-layer design rules](/design-rules-list#oshpark), which are configured to OSHPark's manufacturing capabilities.
+This will use the built-in [OSHPark 2-layer design rules](/reference/design-rules-list#oshpark), which are configured to OSHPark's manufacturing capabilities.
 
 Finish setting up EDRC by adding the `edrc.yml` file to git:
 ```bash
@@ -77,7 +82,7 @@ And that's it! Sit back and relax as EDRC queues and runs your design rule check
 ## Next Steps
 Now that you've setup EDRC and had your first build run it's time to configure EDRC to do exactly what you want. Here's a few starting points:
 
- - [Configure a custom DRU file](/setup-custom-dru)
- - [Show off your build status in your repo](/setup-build-status-image)
- - [Embed images from your build on a website or wiki](/setup-build-images)
- - [Automatically generate gerber files for your PCB](/setup-gerber-generation)
+ - [Configure a custom DRU file](/guides/setup-custom-dru)
+ - [Show off your build status in your repo](/guides/setup-build-status-image)
+ - [Embed images from your build on a website or wiki](/guides/setup-build-images)
+ - [Automatically generate gerber files for your PCB](/guides/setup-gerber-generation)

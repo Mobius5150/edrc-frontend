@@ -73,7 +73,7 @@ export class UserMeControl extends React.Component <any, IUserMeControlState> {
 						</React.Fragment>
 					}
 					<li className="menu-item">Settings</li>
-					<li className="menu-item">Help</li>
+					<Link to="/docs" target="_self"><li className="menu-item">Documentation</li></Link>
 					<Link to="/logout" target="_self">
 						<li 
 							className="menu-item"

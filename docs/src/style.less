@@ -9,10 +9,13 @@
 		url("/fonts/ionicons.svg?v=2.0.0#Ionicons") format("svg"); font-weight: normal; font-style: normal; }
 
 @elementPadding: 10px;
+@bodyBg: #f2f2f2;
+@docBg: #fff;
+@docPadding: 20px;
 
 body {
     color: @backgroundPrimary;
-    background-color: @foregroundPrimary;
+    background-color: @bodyBg;
 }
 
 [class*="ion-"] {
@@ -24,97 +27,142 @@ body {
 }
 
 .doc-body {
-    max-width: 800px;
-    margin: auto;
+    @sidebarWidth: 250px;
 
-    img {
-        display: block;
-        margin: auto;
-    }
+    max-width: 900px;
+    margin: @docPadding auto;
+    position: relative;
 
-    .left-align {
-        img {
-            margin: 0;
-        }
-    }
+    .sidebar {
+        width: @sidebarWidth;
+        position: fixed;
 
-    .icon {
-        display: inline-block;
-    }
-
-    a {
-        color: @backgroundQuarternary;
-
-        &:visited {
-            color: @backgroundQuarternary;
-        }
-
-        &:active {
-            color: @backgroundSecondary;
-        }
-
-        &:hover {
-            color: @backgroundPrimary;
-        }
-    }
-
-    blockquote {
-        font-style: italic;
-        color: @backgroundTertiary;
-        background-color: fade(@foregroundTertiary, 10%);
-
-        &, p {
-            margin: 0;
-            padding: @elementPadding;
-        }
-    }
-
-    p code {
-        background-color: fade(@backgroundPrimary, 5%);
-        padding: 3px 5px 1px 5px;
-    }
-
-    pre:not([class*="language-"]) > code {
-        background-color: fade(@backgroundPrimary, 5%);
-        padding: @elementPadding;
-        display: block;
-    }
-
-    pre[class*="language-"] > code {
-        font-size: 0.9em;
-    }
-
-    table {
-        thead th {
-            padding: 0 20px 0 0;
-            text-align: left;
-
-            &:last-child {
+        .links {
+            ul {
+                list-style: none;
+                margin: 0;
                 padding: 0;
             }
         }
 
-        tbody tr {
-            td {
-                &:last-child {
-                    a {
-                        visibility: hidden;
-                    }
-                }
-            }
-
+        a {
+            color: @backgroundPrimary;
+            text-decoration: none;
 
             &:hover {
-                td a {
-                    visibility: visible;
-                }
+                color: @backgroundTertiary;
+                text-decoration: underline;
             }
+        }
+
+        h1 {
+            margin-top: 0;
         }
     }
 
-    iframe {
-        border: 0;
-        width: 100%;
-        min-height: 350px;
+    .doc {
+        position: absolute;
+        left: @sidebarWidth;
+        right: 0;
+        top: 0;
+        background-color: @docBg;
+        margin-top: -@docPadding;
+        padding: @docPadding @docPadding;
+
+        img {
+            display: block;
+            margin: auto;
+            max-width: 90%;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        .left-align {
+            img {
+                margin: 0;
+            }
+        }
+
+        .icon {
+            display: inline-block;
+        }
+
+        a {
+            color: @backgroundQuarternary;
+
+            &:visited {
+                color: @backgroundQuarternary;
+            }
+
+            &:active {
+                color: @backgroundSecondary;
+            }
+
+            &:hover {
+                color: @backgroundPrimary;
+            }
+        }
+
+        blockquote {
+            font-style: italic;
+            color: @backgroundTertiary;
+            background-color: fade(@foregroundTertiary, 10%);
+
+            &, p {
+                margin: 0;
+                padding: @elementPadding;
+            }
+        }
+
+        p code {
+            background-color: fade(@backgroundPrimary, 5%);
+            padding: 3px 5px 1px 5px;
+        }
+
+        pre:not([class*="language-"]) > code {
+            background-color: fade(@backgroundPrimary, 5%);
+            padding: @elementPadding;
+            display: block;
+        }
+
+        pre[class*="language-"] > code {
+            font-size: 0.9em;
+        }
+
+        table {
+            thead th {
+                padding: 0 20px 0 0;
+                text-align: left;
+
+                &:last-child {
+                    padding: 0;
+                }
+            }
+
+            tbody tr {
+                td {
+                    &:last-child {
+                        a {
+                            visibility: hidden;
+                        }
+                    }
+                }
+
+
+                &:hover {
+                    td a {
+                        visibility: visible;
+                    }
+                }
+            }
+        }
+
+        iframe {
+            border: 0;
+            width: 100%;
+            min-height: 350px;
+        }
     }
 }
