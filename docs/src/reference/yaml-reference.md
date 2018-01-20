@@ -97,5 +97,16 @@ The `version` directive specifies the version of Eagle to use in checking design
 
  - 8.4.1 (default)
  - 8.4.0
+ - 8.3.2
+ - 8.3.1
+ - 8.3.0
+ - 8.2.2
+ - 8.2.1
  - 8.2.0
  - 8.1.1
+ - 8.1.0
+ - 8.0.2
+ - 8.0.1
+ - 8.0.0
+ - 7.7.0
+ - 7.5.0
