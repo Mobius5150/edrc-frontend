@@ -31,6 +31,9 @@ Metalsmith(__dirname)
 		},
 		reference: {
             pattern: ['reference/*.md']
+		},
+		about: {
+            pattern: ['about.md', 'about/*.md']
         },
     }))
 	.use(less({ useDynamicSourceMap: true }))

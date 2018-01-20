@@ -38,6 +38,14 @@
 						</li>
 					{{/each}}
 				</ul>
+				<h2>About</h2>
+				<ul>
+					{{#each collections.about}}
+						<li>
+							<a href="/{{path}}">{{#if linkTitle}}{{linkTitle}}{{else}}{{baseTitle}}{{/if}}</a>
+						</li>
+					{{/each}}
+				</ul>
 			</div>
 		</div>
 		<div class="doc">
