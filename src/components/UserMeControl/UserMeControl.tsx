@@ -101,17 +101,15 @@ export class UserMeControl extends React.Component <any, IUserMeControlState> {
 	}
 
 	private getFrontendCookieVal(): string | null {
-		if (document) {
-			const cookies = document.cookie.split(';');
-			for (const c in cookies) {
-				const [key, value] = cookies[c].split('=', 2);
-				if (!key || !value) {
-					continue;
-				}
+		const cookies = document.cookie.split(';');
+		for (const c in cookies) {
+			const [key, value] = cookies[c].split('=', 2);
+			if (!key || !value) {
+				continue;
+			}
 
-				if (key === UserMeControl.FrontendCookieName) {
-					return value;
-				}
+			if (key === UserMeControl.FrontendCookieName) {
+				return value;
 			}
 		}
 
