@@ -30,16 +30,18 @@ body, html {
 }
 
 .header {
+	@headerLogoPadding: 10px;
+	@headerLinkPadding: 20px;
+
 	background-color: @headerBackgroundColor;
 	color: @headerTextColor;
 	height: @headerHeight;
 
 	.header-logo {
-		@headerLogoPadding: 10px;
-
 		display: inline-block;
 		padding: @headerLogoPadding 0 0 @headerLogoPadding;
 		height: @headerHeight;
+		width: 15%;
 		
 		h1 {
 			float: left;
@@ -58,6 +60,27 @@ body, html {
 			float: left;
 			vertical-align: bottom;
 			border-radius: 6px;
+		}
+	}
+
+	.links {
+		display: inline-block;
+		height: @headerHeight;
+		line-height: @headerHeight;
+		vertical-align: top;
+		margin-left: -(@headerLogoPadding + @headerLinkPadding);
+		margin-right: 3*@headerLinkPadding;
+		
+		a {
+			color: white;
+			text-decoration: none;
+			padding: 0 @headerLinkPadding 0 @headerLinkPadding;
+			font-size: 1.6em;
+			display: inline-block;
+
+			&:hover {
+				background-color: @backgroundSecondary;
+			}
 		}
 	}
 }

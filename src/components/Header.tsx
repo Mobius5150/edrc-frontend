@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import { UserMeControl } from './UserMeControl/UserMeControl';
 import '../app.css';
 
@@ -10,7 +11,11 @@ class User extends React.Component {
 					<h1>EDRC</h1>
 					<span className="status">alpha</span>
 				</div>
-			<UserMeControl />
+				<div className="links">
+					<Link to="/">Home</Link>
+					<Link to="/docs" target="_self">Documentation</Link>
+				</div>
+				<UserMeControl />
 			</div>
 		);
 	}
