@@ -23,6 +23,7 @@ interface IUserState {
 export class User extends React.Component<IUserProps, IUserState> {
 	private userController: UserController;
 	private username: string;
+	private userProjectsBar: UserProjectsBar | null;
 
 	public constructor(props: IUserProps) {
 		super(props);
@@ -94,7 +95,12 @@ export class User extends React.Component<IUserProps, IUserState> {
 		return (
 			<div className="page-user">
 				<div className="box">
-				<UserProjectsBar {...userParams} project={this.state.selectedProject} onProjectSelected={(p) => this.onProjectSelected(p)} />
+				<UserProjectsBar
+					{...userParams}
+					project={this.state.selectedProject}
+					onProjectSelected={(p) => this.onProjectSelected(p)}
+					ref={bar => this.userProjectsBar = bar}
+				/>
 				{this.state.selectedProject === null ? 
 					<div className="project-builds">
 						<div className="App-header">
@@ -105,7 +111,11 @@ export class User extends React.Component<IUserProps, IUserState> {
 						</p>
 					</div>
 					:
-					<UserProjectPanel {...userParams} project={this.state.selectedProject} />
+					<UserProjectPanel
+						{...userParams}
+						project={this.state.selectedProject}
+						onProjectDeactivated={p => this.onProjectDeactivated(p)}
+					/>
 				}
 				</div>
 			</div>
@@ -114,6 +124,13 @@ export class User extends React.Component<IUserProps, IUserState> {
 
 	private onProjectSelected(project: IProject) {
 		this.setState({ ...this.state, selectedProject: project.name });
+	}
+
+	private onProjectDeactivated(project: IProject) {
+		this.setState({ ...this.state, selectedProject: null });
+		if (this.userProjectsBar) {
+			this.userProjectsBar.refreshProjects();
+		}
 	}
 }
 

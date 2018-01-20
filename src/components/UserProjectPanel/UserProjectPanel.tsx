@@ -1,15 +1,17 @@
 import * as React from 'react';
+import * as Modal from 'react-modal';
 import { ProjectController } from '../../controllers/Project';
 import { BuildController } from '../../controllers/Build';
-import './style.css';
 import { IProject } from '../../Models/Project';
 import { IBuildListResult } from '../../Models/Build';
 import { BuildListItem } from './BuildListItem';
 import { BuildStatusControl } from '../BuildStatusControl';
+import './style.css';
 
 interface IUserProjectsPanelProps {
 	username: string;
 	project: string;
+	onProjectDeactivated?: (project: IProject) => void;
 }
 
 interface IUserProjectsPanelState {
@@ -19,6 +21,7 @@ interface IUserProjectsPanelState {
 	buildsLoading: boolean;
 	projectError: Error | null;
 	buildsError: Error | null;
+	settingsVisible: boolean;
 }
 
 export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, IUserProjectsPanelState> {
@@ -40,6 +43,7 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 			builds: null,
 			projectError: null,
 			buildsError: null,
+			settingsVisible: false
 		};
 	}
 
@@ -122,8 +126,34 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 						enableEmbed={true}
 						enableEmbedText={true}
 					/>
+					<div
+						className="project-settings"
+						onClick={() => this.openProjectSettings()}
+						title="Project settings"
+					>
+						<span className="ion-gear-a" />
+					</div>
 				</div>
 				{this.renderBuilds()}
+				<Modal
+					className="embed-status-modal"
+					isOpen={this.state.settingsVisible}
+					onRequestClose={() => this.closeProjectSettings()}
+					contentLabel="Embed Build Status"
+				>
+					<h1>Project Settings</h1>
+					<div className="settings">
+						<div className="setting-dangerous">
+							<button
+								className="button-dangerous"
+								onClick={(e) => this.deactivateProjectClicked(e)}
+							>
+								Disable Project
+							</button>
+						</div>
+					</div>
+					<button onClick={() => this.closeProjectSettings()}>close</button>
+				</Modal>
 			</div>
 		);
 	}
@@ -205,6 +235,39 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 				{builds.map(b => <BuildListItem build={b} header={b.buildId} key={b.buildId} fromGitRef={false} />)}
 			</div>
 		);
+	}
+
+	private openProjectSettings() {
+		this.setState({...this.state, settingsVisible: true});
+	}
+
+	private closeProjectSettings() {
+		this.setState({...this.state, settingsVisible: false});
+	}
+
+	private async deactivateProjectClicked(e: React.MouseEvent<HTMLButtonElement>) {
+		const project = this.state.project;
+		if (!project) {
+			return;
+		}
+
+		const button = e.target as HTMLButtonElement;
+		button.disabled = true;
+		if (!confirm(`Are you sure you want to deactivate ${project.fullName}?\nThis will permanently delete all builds and cannot be undone.`)) {
+			button.disabled = false;
+			return;
+		}
+
+		try {
+			await this.projectController.deactivateUserProject(project.ownerName, project.name);
+		} catch (e) {
+			const message = e instanceof Error ? e.message : e;
+			alert(`An error occured deactivating the project: ${message}.\n Please reload and try again.`);
+		}
+
+		if (this.props.onProjectDeactivated) {
+			this.props.onProjectDeactivated(project);
+		}
 	}
 }
 

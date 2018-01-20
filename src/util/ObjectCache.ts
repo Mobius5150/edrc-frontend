@@ -216,6 +216,15 @@ export class ObjectCache<Obj extends {}> {
 		}
 	}
 
+	public removeObject(key: string): void {
+		if (!this.cache[key]) {
+			return;
+		}
+
+		this.cache[key].release(this.cache[key].references);
+		delete this.cache[key];
+	}
+
 	public refreshObject(key: string): Promise<Obj | Error | null> {
 		if (!(this.cache[key])) {
 			throw new Error('Object not in cache');
