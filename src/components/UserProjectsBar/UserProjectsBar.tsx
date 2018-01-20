@@ -39,7 +39,7 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 			user: null,
 			projects: null,
 			modalIsOpen: false,
-			selectedProject: `${this.props.username}/${this.props.project}`,
+			selectedProject: (this.props.username && this.props.project) ? `${this.props.username}/${this.props.project}` : null,
 		};
 	}
 
@@ -68,7 +68,12 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 		if (!(this.state.projects)) {
 			this.setState({ ...this.state, loading: true });
 			this.projectController.getUserProjects(this.username, { filter: 'activated' }, 1)
-				.then(projects => this.setState({...this.state, projects, loading: false}))
+				.then(projects => {
+					this.setState({...this.state, projects, loading: false});
+					if (!this.state.selectedProject && projects && projects.length > 0) {
+						this.selectProject(projects[0], false);
+					}
+				})
 				.catch(e => this.setState({...this.state, user: null, signedIn: false, loading: false}));
 		}
 	}
@@ -122,10 +127,13 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 		this.setState({...this.state, modalIsOpen: false});
 	}
 
-	private selectProject(project: IProject) {
+	private selectProject(project: IProject, navigate: Boolean = true) {
 		if (this.state.selectedProject !== project.fullName) {
 			this.setState({...this.state, selectedProject: project.fullName });
-			this.props.history.push(`/g/${project.fullName}`);
+			if (navigate) {
+				this.props.history.push(`/g/${project.fullName}`);
+			}
+
 			if (typeof this.props.onProjectSelected === 'function') {
 				this.props.onProjectSelected(project);
 			}

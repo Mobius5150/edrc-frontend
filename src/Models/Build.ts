@@ -36,8 +36,8 @@ export interface IPublicBuildDetails {
 export interface IPublicBuildFileSummary {
 	filename: string;
 	normalizedFilename: string;
-	resultsUrl: string;
-	imageUrl: string;
+	resultsUrl?: string;
+	imageUrl?: string;
 	errorMessage: string;
 	errorCode: string;
 	approvedErrorCount: number;

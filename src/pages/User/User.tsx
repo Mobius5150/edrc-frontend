@@ -56,12 +56,6 @@ export class User extends React.Component<IUserProps, IUserState> {
 			newState.loading = false;
 			newState.error = 'No user provided';
 			setState = true;
-		// } else if (null === this.state.user) {
-		// 	this.userController.getUser(this.username)
-		// 		.then(user => this.setState({...this.state, user, signedIn: user !== null, loading: false}))
-		// 		.catch((e: Error) => {
-		// 				this.setState({...this.state, user: null, signedIn: false, loading: false, error: e.message});
-		// 		});
 		} else {
 			newState.loading = false;
 			setState = true;
@@ -102,7 +96,7 @@ export class User extends React.Component<IUserProps, IUserState> {
 					ref={bar => this.userProjectsBar = bar}
 				/>
 				{this.state.selectedProject === null ? 
-					<div className="project-builds">
+					<div className="project">
 						<div className="App-header">
 							<h2>UserController: {this.state.user ? this.state.user.username : ''}</h2>
 						</div>
