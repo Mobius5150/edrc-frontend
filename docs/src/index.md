@@ -86,4 +86,3 @@ Now that you've setup EDRC and had your first build run it's time to configure E
 
  - [Configure a custom DRU file](/guides/setup-custom-dru)
  - [Show off your build status in your repo](/guides/setup-build-status-image)
- - [Embed images from your build on a website or wiki](/guides/setup-build-images)
