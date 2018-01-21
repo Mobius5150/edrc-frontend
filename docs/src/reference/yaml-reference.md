@@ -14,22 +14,22 @@ A full EDRC configuration looks like this:
 version: 1
 eagle:
   drc:
-    - file: "my-design.brd"
-      dru: "oshpark-2layer"
-	  version: 8.4.1
-	- file: "path/another-design.brd"
-	  dru:
-	    file: "path/custom.dru"
-	    layers: "-ALL 5"
-	  version: 8.0.0
-	- file: "path/third-design.brd"
-	  dru:
-	    file: "path/custom.dru"
-	    layers:
-		  - ALL
-		  - -TOP
-		  - 5
-	  version: 8.1.0
+  - file: "my-design.brd"
+    dru: "oshpark-2layer"
+    version: 8.4.1
+  - file: "path/another-design.brd"
+    dru:
+      file: "path/custom.dru"
+      layers: "-ALL 5"
+    version: 8.0.0
+  - file: "path/third-design.brd"
+    dru:
+      file: "path/custom.dru"
+      layers:
+      - ALL
+      - -TOP
+      - 5
+    version: 8.1.0
 ```
 
 Let's break that down. This configuration will tell EDRC to check design rules on three files: `my-design.brd`, `path/another-design.brd`, and `path-third-design.brd`. From the configuration we can also tell that this project must have the following directory structure:
@@ -39,8 +39,8 @@ project/
   my-design.brd
   path/
     another-design.brd
-	custom.dru
-	third-design.brd
+  custom.dru
+  third-design.brd
 ```
 
 Next, let's look at what each of the options do:
@@ -78,9 +78,9 @@ When specifing DRU layers you can either specify a flat list as a single string 
  - dru:
    file: "<drufile>"
    layers:
-     - 1
-	 - 2
-	 - 3
+   - 1
+   - 2
+   - 3
 ```
 
 The above layers definition would be equivalent to the following:
