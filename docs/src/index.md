@@ -13,6 +13,8 @@ EDRC is a tool that helps you collaborate with confidence on Eagle CAD hardware 
 
 If you've ever used automated software build/test systems you'll feel right at home setting up EDRC.
 
+![Sample EDRC Build](guides/getting-started/sample-build.png)
+
 ## Adding EDRC to your project
 To start with, you'll need to ensure that your board and schematic files are committed into a git repository and uploaded to Github. [Check out our guide for using eagle with git and Github](/guides/setup-git) if you haven't already.
 
