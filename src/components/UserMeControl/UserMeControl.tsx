@@ -72,8 +72,8 @@ export class UserMeControl extends React.Component <any, IUserMeControlState> {
 							<li className="menu-divider"/>
 						</React.Fragment>
 					}
-					<li className="menu-item">Settings</li>
 					<Link to="/docs" target="_self"><li className="menu-item">Documentation</li></Link>
+					<Link to="/docs/about" target="_self"><li className="menu-item">About EDRC</li></Link>
 					<Link to="/logout" target="_self">
 						<li 
 							className="menu-item"

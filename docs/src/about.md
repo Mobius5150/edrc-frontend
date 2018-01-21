@@ -4,7 +4,7 @@ linkTitle: About
 ---
 
 # About EDRC
-EDRC is a free site that lets you build electrical designs with confidence. EDRC was made as a hobby by Mike Blouin and James Finlay, give them a follow below to show your support!
+EDRC is a free site that helps you build printed circuit boards with confidence. EDRC was made by Mike Blouin and James Finlay in their free time, give them a follow below to show your support!
 
 ## Mike Blouin
 <a class="twitter-follow-button"
