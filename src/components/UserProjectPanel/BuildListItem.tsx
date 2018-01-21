@@ -33,8 +33,12 @@ export class BuildListItem extends React.Component <IBuildListItemProps, IBuildL
 			<div className={classNames({build: true, expanded: this.state.expanded})}>
 				<div className="build-summary" onClick={this.onExpandCollapse}>
 					<div className="build-header">
-						<h4>{this.props.header}</h4>
+						<h4>{this.getCleanGitRefName(this.props.header)}</h4>
 						{this.renderBuildStatus()}
+						<span className="commit">{this.cleanCommitMessage(build.commitMessage)}</span>
+						<span className="commit-author">
+							by <a href={build.triggerUrl} onClick={(e) => e.stopPropagation()}>@{build.commitUser}</a>
+						</span>
 					</div>
 					<span className="build-date" title={buildMoment.format('LLL')}>{buildMoment.fromNow()}</span>
 				</div>
@@ -99,6 +103,46 @@ export class BuildListItem extends React.Component <IBuildListItemProps, IBuildL
 
 	onExpandCollapse = () => {
 		this.setState({ ...this.state, expanded: !this.state.expanded });
+	}
+
+	private getCleanGitRefName(branchRef: string): string {
+		let cleanRef: string = branchRef;
+		if (branchRef && branchRef.indexOf && cleanRef.indexOf('/')) {
+			const match = /^\/?refs\/(\S+\/)?(\S+)$/.exec(cleanRef); // matches '/refs/heads/master`
+			if (null === match) {
+				return branchRef;
+			}
+
+			const ref: string = match[2];
+			if (typeof match[1] === 'string' && ref) {
+				const refSpace: string = match[1];
+				if (refSpace === 'heads/') {
+					cleanRef = `${ref}`;
+				} else if (refSpace === 'tags/') {
+					cleanRef = `${ref}`;
+				} else if (refSpace === 'remotes/') {
+					cleanRef = `${ref}`;
+				} else {
+					return branchRef;
+				}
+			} else if (ref) {
+				cleanRef = ref;
+			}
+		}
+
+		return cleanRef;
+	}
+
+	private cleanCommitMessage(message: string): string | JSX.Element {
+		if (message && message.substr) {
+			if (message.length > 80) {
+				return <>{message.substr(0, 80)}&hellip;</>;
+			}
+
+			return message;
+		}
+
+		return message;
 	}
 }
 
