@@ -69,11 +69,11 @@ Once you have your `edrc.yml` file inside your git repo and you have that pushed
 
 **Step 1:** Start by going to EDRC and signing in with your Github account.
 
->TODO: ADD image/gif of signing into EDRC
+![Sign into EDRC](guides/getting-started/login-prompt.png)
 
 **Step 2:** Once you're signed in, click the "Add Project" button.
 
->TODO: Replace "Add Project" button above with an image of the actual button.
+![Add Project](guides/getting-started/add-project.png)
 
 **Step 3:** Select your project in the list of projects from Github.
 
