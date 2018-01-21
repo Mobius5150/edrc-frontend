@@ -12,7 +12,7 @@ A full EDRC configuration looks like this:
 
 ```yaml
 version: 1
-edrc:
+eagle:
   drc:
     - file: "my-design.brd"
       dru: "oshpark-2layer"

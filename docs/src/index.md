@@ -37,7 +37,7 @@ my-project/
 
 Now, edit `edrc.yml` and add the following:
 ```yaml
-edrc:
+eagle:
   drc:
     - file: "my-design.brd"
 ```
@@ -50,7 +50,7 @@ What we have is almost enough to commit and have EDRC process the file, but we h
 
 Edit `edrc.yml` and add the last line:
 ```yaml
-edrc:
+eagle:
   drc:
     - file: "my-design.brd"
       dru: "oshpark-2layer"
