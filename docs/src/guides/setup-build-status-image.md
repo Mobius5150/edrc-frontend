@@ -28,4 +28,4 @@ To embed your build status on a GitHub repository copy the `markdown` embed code
 EDRC can also generate an embed code suitable anywhere you can use HTML: .html files, .php files, jsx files, etc... To embed the code simply copy the `HTML` formatted embed code from the Embed Build Status Dialogue.
 
 ## Next Step
-Now that your repository is showing off the status of your builds, [consider embedding board images that EDRC generates on your website or wiki](/guides/setup-build-images).
+Now that your repository is showing off the status of your builds, [consider embedding board images that EDRC generates on your website or wiki](/guides/setup-build-image).

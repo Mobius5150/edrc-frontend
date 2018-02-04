@@ -153,6 +153,16 @@
 					padding-top: 0;
 					flex: 1;
 
+					.build-file-image {
+						@border-padding: -4px;
+						max-width: 50%;
+						margin: @border-padding (@build-padding + @border-padding) @border-padding @border-padding;
+
+						img  {
+							max-width: 100%;
+						}
+					}
+
 					.errors {
 						max-height: 500px;
 						overflow-y: auto;

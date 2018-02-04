@@ -216,7 +216,14 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 
 		return (
 			<div className="builds">
-				{Object.keys(branches).map(b => <BuildListItem build={branches[b]} header={b} key={b} fromGitRef={true} />)}
+				{Object.keys(branches).map(b =>
+					<BuildListItem
+						build={branches[b]}
+						header={b}
+						key={b}
+						fromGitRef={true}
+						project={this.state.project ? this.state.project.name : this.project}
+					/>)}
 			</div>
 		);
 	}
@@ -232,7 +239,14 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 
 		return (
 			<div className="builds">
-				{builds.map(b => <BuildListItem build={b} header={b.buildId} key={b.buildId} fromGitRef={false} />)}
+				{builds.map(b => 
+					<BuildListItem
+						build={b}
+						header={b.buildId}
+						key={b.buildId}
+						fromGitRef={false}
+						project={this.state.project ? this.state.project.name : this.project}
+					/>)}
 			</div>
 		);
 	}

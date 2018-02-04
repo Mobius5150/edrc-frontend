@@ -4,24 +4,24 @@ import * as url from 'url';
 import classNames from 'classnames';
 import './style.css';
 
-interface IBuildStatusControlState {
+interface IBuildImageControlState {
 	embedModalOpen: boolean;
-	compactChecked: boolean;
 }
 
-interface IBuildStatusControlProps {
+interface IBuildImageControlProps {
 	branchRef?: string;
 	branch?: string;
+	fileName?: string;
 	buildId?: string;
+	normalizedFileName?: string;
 	enableEmbed?: boolean;
 	enableEmbedText?: boolean;
-	compact?: boolean;
 	hoverText?: string;
 	owner: string;
 	project: string;
 }
 
-export class BuildStatusControl extends React.Component <IBuildStatusControlProps, IBuildStatusControlState> {
+export class BuildImageControl extends React.Component <IBuildImageControlProps, IBuildImageControlState> {
 	private static readonly embedPreviewFormats = {
 		markdown: 'Markdown',
 		html: 'HTML',
@@ -29,48 +29,58 @@ export class BuildStatusControl extends React.Component <IBuildStatusControlProp
 		url: 'Url'
 	};
 
-	private static embedPreviewFormat: string = 'markdown';
+	private static embedPreviewFormat: string = 'url';
 	private url: string;
 
-	public constructor(props: IBuildStatusControlProps) {
+	public constructor(props: IBuildImageControlProps) {
 		super(props);
 
 		this.state = {
 			embedModalOpen: false,
-			compactChecked: !!this.props.compact,
 		};
 	}
 
 	componentWillMount() {
-		this.url = this.getStatusImageUrl(this.props);
+		this.url = this.getImageUrl(this.props);
 	}
 
-	componentWillReceiveProps(newProps: IBuildStatusControlProps) {
-		this.url = this.getStatusImageUrl(newProps);
+	componentWillReceiveProps(newProps: IBuildImageControlProps) {
+		this.url = this.getImageUrl(newProps);
 	}
 
-	private getStatusImageUrl(props: IBuildStatusControlProps) {
+	private getImageUrl(props: IBuildImageControlProps) {
 		let generatedUrl = '';
 		let hasQuery = false;
-		if (props.buildId) {
-			generatedUrl = `/api/v1/user/${props.owner}/project/${props.project}/build/${props.buildId}/img/status.svg`;
+		let fileName = '';
+		if (props.fileName) {
+			fileName = encodeURIComponent(props.fileName);
+		} else if (props.normalizedFileName) {
+			fileName = `${props.normalizedFileName}?isNormalized=true`;
+			hasQuery = true;
 		} else {
-			generatedUrl = `/api/v1/user/${props.owner}/project/${props.project}/img/status.svg`;
-			if (props.branchRef) {
-				hasQuery = true;
-				generatedUrl = generatedUrl + '?ref=' + encodeURIComponent(props.branchRef);
-			} else if (props.branch) {
-				hasQuery = true;
-				generatedUrl = generatedUrl + '?branch=' + encodeURIComponent(props.branch);
-			}
+			throw new Error('Build image component requires filename or normalized filename');
 		}
 
-		if (props.compact) {
-			if (hasQuery) {
-				generatedUrl = `${generatedUrl}&compact=true`;
-			} else {
-				generatedUrl = `${generatedUrl}?compact=true`;
-			}
+		fileName = fileName.replace('.brd', '.png');
+
+		if (props.buildId) {
+			generatedUrl = `/api/v1/user/${props.owner}/project/${props.project}/build/${props.buildId}/img/file/${fileName}`;
+		} else {
+			generatedUrl = `/api/v1/user/${props.owner}/project/${props.project}/img/file/${fileName}`;
+		}
+
+		if (hasQuery) {
+			generatedUrl += '&';
+		} else {
+			generatedUrl += '?';
+		}
+
+		if (props.branchRef) {
+			generatedUrl = generatedUrl + 'ref=' + encodeURIComponent(props.branchRef);
+		} else if (props.branch) {
+			generatedUrl = generatedUrl + 'branch=' + encodeURIComponent(props.branch);
+		} else {
+			generatedUrl = generatedUrl.substr(0, generatedUrl.length - 1);
 		}
 
 		return generatedUrl;
@@ -79,19 +89,18 @@ export class BuildStatusControl extends React.Component <IBuildStatusControlProp
 	render() {
 		const embed = !!this.props.enableEmbed;
 		const embedText = embed && !!this.props.enableEmbedText;
-		const hoverText = this.props.hoverText || (embed ? 'embed status' : '');
+		const hoverText = this.props.hoverText || (embed ? 'embed image' : '');
 		const imageUrl = this.state.embedModalOpen && url.resolve(
 			window.location.href,
-			this.getStatusImageUrl({
-				...(this.props as IBuildStatusControlProps),
-				compact: this.state.compactChecked
+			this.getImageUrl({
+				...(this.props as IBuildImageControlProps)
 			})
 		);
 
 		return (
 			<React.Fragment>
 				<div
-					className={classNames({'embed-link': embed, 'build-status': true})}
+					className={classNames({'embed-link': embed, 'build-file-image': true})}
 					title={hoverText}
 					onClick={(e) => this.openModal(e)}
 				>
@@ -100,30 +109,27 @@ export class BuildStatusControl extends React.Component <IBuildStatusControlProp
 					<div onClick={e => e.stopPropagation()}>
 						{embed && this.state.embedModalOpen &&
 							<Modal
-								className="embed-status-modal"
+								className="embed-file-modal"
 								isOpen={this.state.embedModalOpen}
 								onRequestClose={() => this.closeModal()}
-								contentLabel="Embed Build Status"
+								contentLabel="Embed Build Image"
 							>
-								<h1>Embed Build Status</h1>
+								<h1>Embed Build Image</h1>
 								<div className="embed-doc">
-									Embed this code in a web page to show the live status of <strong>{this.getEmbedExplanation()}.</strong> <a href="/docs/guides/setup-build-status-image">Read the docs for more details.</a>
+									Embed this code in a web page to show the most recent file capture of <strong>{this.getEmbedExplanation()}.</strong> <a href="/docs/guides/setup-build-image">Read the docs for more details.</a>
 								</div>
 								<div>
 									Format:&nbsp;
-									<select onChange={(e) => this.changeEmbedPreviewFormat(e)} defaultValue={BuildStatusControl.embedPreviewFormat}>
-										{Object.keys(BuildStatusControl.embedPreviewFormats).map(id => (
+									<select onChange={(e) => this.changeEmbedPreviewFormat(e)} defaultValue={BuildImageControl.embedPreviewFormat}>
+										{Object.keys(BuildImageControl.embedPreviewFormats).map(id => (
 											<option key={id} value={id}>
-												{BuildStatusControl.embedPreviewFormats[id]}
+												{BuildImageControl.embedPreviewFormats[id]}
 											</option>
 										))}
 									</select>
 								</div>
-								<div>
-									<label>Compact: <input type="checkbox" onChange={e => this.changeEmbedPreviewCompact(e)} checked={this.state.compactChecked} /></label>
-								</div>
 								<div className="embed-preview">
-									Preview: <div className="build-status"><img src={imageUrl as string} /></div>
+									Preview: <br /><img src={imageUrl as string} />
 								</div>
 								<div className="embed-source">
 									<pre>{this.generateEmbedPreview(imageUrl as string)}</pre>
@@ -152,21 +158,15 @@ export class BuildStatusControl extends React.Component <IBuildStatusControlProp
 
 	private changeEmbedPreviewFormat(e: React.ChangeEvent<HTMLSelectElement>) {
 		if (e && e.target) {
-			BuildStatusControl.embedPreviewFormat = e.target.value;
+			BuildImageControl.embedPreviewFormat = e.target.value;
 			this.setState({...this.state});
 		}
 	}
 
-	private changeEmbedPreviewCompact(e: React.ChangeEvent<HTMLInputElement>) {
-		if (e && e.target) {
-			this.setState({...this.state, compactChecked: e.target.checked});
-		}
-	}
-
 	private generateEmbedPreview(imageUrl: string): string {
-		const title = 'design rule check status';
+		const title = (this.props.fileName ? this.props.fileName : 'board image') + ' from EDRC.me';
 		const linkUrl = url.resolve(window.location.href, `/g/${this.props.owner}/${this.props.project}`);
-		switch (BuildStatusControl.embedPreviewFormat) {
+		switch (BuildImageControl.embedPreviewFormat) {
 			case 'html':
 				return `<a href="${linkUrl}">
 	<img alt="${title}" src="${imageUrl}" />
@@ -184,14 +184,14 @@ export class BuildStatusControl extends React.Component <IBuildStatusControlProp
 	private getEmbedExplanation() {
 		if (this.props.buildId) {
 			return `build #${this.props.buildId}`;
-		} else if (this.props.branchRef) {
-			return `branch ${this.props.branchRef}`;
 		} else if (this.props.branch) {
 			return `branch ${this.props.branch}`;
+		} else if (this.props.branchRef) {
+			return `branch ${this.props.branchRef}`;
 		} else {
 			return `this project`;
 		}
 	}
 }
 
-export default BuildStatusControl;
+export default BuildImageControl;

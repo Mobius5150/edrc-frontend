@@ -3,9 +3,12 @@ import './style.css';
 import { IProjectBuild, IPublicBuildDetails, IPublicBuildFileSummary, IBuildFileErrors, IBuildFileErrorsContract } from '../../Models/Build';
 import { BuildController } from '../../controllers/Build';
 import classNames from 'classnames';
+import BuildImageControl from '../BuildImageControl/BuildImageControl';
 
 interface IBuildDetailsProps {
 	build: IProjectBuild;
+	fromGitRef: boolean;
+	project?: string;
 }
 
 interface IBuildDetailsState {
@@ -189,6 +192,7 @@ export class BuildDetails extends React.Component <IBuildDetailsProps, IBuildDet
 
 		return (
 			<div className="build-pane">
+				{this.renderBuildImage()}
 				<div className={classNames({errors: true, empty: otherErrorCount === 0})}>
 					<div className="error-list-name">{otherErrorCount} Errors</div>
 					{this.renderErrorList(errors.other, this.state.expandedErrorGroups.other)}
@@ -252,6 +256,43 @@ export class BuildDetails extends React.Component <IBuildDetailsProps, IBuildDet
 		);
 	}
 
+	renderBuildImage() {
+		if (!this.state.selectedFileName) {
+			return false;
+		}
+
+		const fileDetails = this.getFileBuildResults(this.state.selectedFileName);
+		if (!fileDetails || !fileDetails.imageUrl) {
+			return false;
+		}
+
+		if (this.props.fromGitRef) {
+			return (
+				<BuildImageControl
+					owner={this.props.build.userName}
+					project={this.props.project ? this.props.project : this.props.build.projectId}
+					branchRef={this.props.build.typeRef}
+					enableEmbed={true}
+					enableEmbedText={false}
+					fileName={fileDetails.filename}
+					normalizedFileName={fileDetails.normalizedFilename}
+				/>
+			);
+		} else {
+			return (
+				<BuildImageControl
+					owner={this.props.build.userName}
+					project={this.props.project ? this.props.project : this.props.build.projectId}
+					buildId={this.props.build.buildId}
+					enableEmbed={true}
+					enableEmbedText={false}
+					fileName={fileDetails.filename}
+					normalizedFileName={fileDetails.normalizedFilename}
+				/>
+			);
+		}
+	}
+
 	setErrorGroupCollapsed(description: string, groupList: IGroupList) {
 		if (groupList[description] === null) {
 			delete groupList[description];
@@ -278,6 +319,21 @@ export class BuildDetails extends React.Component <IBuildDetailsProps, IBuildDet
 		}
 
 		return path;
+	}
+
+	getFileBuildResults(normalizedFilename: string): IPublicBuildFileSummary | null {
+		if (!this.state.details) {
+			return null;
+		}
+
+		for (var i in this.state.details.FileBuildResults) {
+			const results = this.state.details.FileBuildResults[i];
+			if (results.normalizedFilename === normalizedFilename) {
+				return results;
+			}
+		}
+
+		return null;
 	}
 }
 

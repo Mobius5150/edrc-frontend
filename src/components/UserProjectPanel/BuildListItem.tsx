@@ -10,6 +10,7 @@ interface IBuildListItemProps {
 	build: IProjectBuild;
 	fromGitRef: boolean;
 	header: string;
+	project?: string;
 }
 
 interface IBuildListItemState {
