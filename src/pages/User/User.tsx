@@ -56,9 +56,6 @@ export class User extends React.Component<IUserProps, IUserState> {
 			newState.loading = false;
 			newState.error = 'No user provided';
 			setState = true;
-		} else {
-			newState.loading = false;
-			setState = true;
 		}
 
 		if (setState) {
@@ -77,10 +74,6 @@ export class User extends React.Component<IUserProps, IUserState> {
 			return (<div className="error">{this.state.error}</div>);
 		}
 
-		if (this.state.loading) {
-			return (<div className="loading" />);
-		}
-
 		const userParams: any = {...this.props};
 		if (this.username) {
 			userParams.username = this.username;
@@ -95,21 +88,22 @@ export class User extends React.Component<IUserProps, IUserState> {
 					onProjectSelected={(p) => this.onProjectSelected(p)}
 					ref={bar => this.userProjectsBar = bar}
 				/>
-				{this.state.selectedProject === null ? 
-					<div className="project">
-						<div className="App-header">
-							<h2>UserController: {this.state.user ? this.state.user.username : ''}</h2>
-						</div>
-						<p className="App-intro">
-							To get started, edit <code>src/App.tsx</code> and save to reload yo.
-						</p>
-					</div>
+				{this.state.loading ?
+					<div className="loading" />
 					:
-					<UserProjectPanel
-						{...userParams}
-						project={this.state.selectedProject}
-						onProjectDeactivated={p => this.onProjectDeactivated(p)}
-					/>
+					this.state.selectedProject === null ? 
+						<div className="project">
+							<div className="no-project">
+								<h2>No Project Selected</h2>
+								<span className="tip">Select or add a project on the left to get started</span>
+							</div>
+						</div>
+						:
+						<UserProjectPanel
+							{...userParams}
+							project={this.state.selectedProject}
+							onProjectDeactivated={p => this.onProjectDeactivated(p)}
+						/>
 				}
 				</div>
 			</div>

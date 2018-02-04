@@ -12,6 +12,7 @@ interface IUserProjectsBarProps extends IGenericRouteProps {
 	username: string;
 	project: string;
 	onProjectSelected?: (p: IProject) => void;
+	onLoadComplete?: () => void;
 }
 
 interface IUserProjectsBarState {
@@ -52,7 +53,7 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 		if (null === this.state.projects) {
 			this.loadUserProjects();
 		} else {
-			this.setState({...this.state, loading: false});
+			this.updateState({loading: false});
 		}
 	}
 
@@ -69,12 +70,12 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 			this.setState({ ...this.state, loading: true });
 			this.projectController.getUserProjects(this.username, { filter: 'activated' }, 1)
 				.then(projects => {
-					this.setState({...this.state, projects, loading: false});
+					this.updateState({projects, loading: false});
 					if (!this.state.selectedProject && projects && projects.length > 0) {
 						this.selectProject(projects[0], false);
 					}
 				})
-				.catch(e => this.setState({...this.state, user: null, signedIn: false, loading: false}));
+				.catch(e => this.updateState({user: null, signedIn: false, loading: false}));
 		}
 	}
 
@@ -129,7 +130,7 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 
 	private selectProject(project: IProject, navigate: Boolean = true) {
 		if (this.state.selectedProject !== project.fullName) {
-			this.setState({...this.state, selectedProject: project.fullName });
+			this.updateState({selectedProject: project.fullName});
 			if (navigate) {
 				this.props.history.push(`/g/${project.fullName}`);
 			}
@@ -144,7 +145,7 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 		return new Promise<void>((resolve, reject) => {
 			if (this.state.projects) {
 				this.projectController.releaseProjectRefs(this.state.projects);
-				this.setState({...this.state, projects: null, selectedProject: null}, () => {
+				this.updateState({projects: null, selectedProject: null}, () => {
 					resolve();
 				});
 			} else {
@@ -154,7 +155,7 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 	}
 
 	private async selectNewProject(p: IProject) {
-		this.setState({...this.state, modalIsOpen: false, loading: true});
+		this.updateState({modalIsOpen: false, loading: true});
 
 		try {
 			const activated = await this.projectController.activateUserProject(this.props.username, p.providerId);
@@ -162,8 +163,26 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 			this.loadUserProjects();
 			this.selectProject(activated);
 		} catch (e) {
-			this.setState({...this.state, loading: false});
+			this.updateState({loading: false});
 		}
+	}
+
+	private updateState(newState: Partial<IUserProjectsBarState>, callback?: () => any) {
+		const newStateComplete = {...this.state, ...newState};
+		let fireLoadCompleteEvent: boolean = false;
+		if (this.state.loading && !newStateComplete.loading) {
+			fireLoadCompleteEvent = true;
+		}
+
+		this.setState(newStateComplete, () => {
+			if (fireLoadCompleteEvent && typeof this.props.onLoadComplete === 'function') {
+				this.props.onLoadComplete();
+			}
+
+			if (typeof callback === 'function') {
+				callback();
+			}
+		});
 	}
 }
 
