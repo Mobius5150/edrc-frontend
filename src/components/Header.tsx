@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import { UserMeControl } from './UserMeControl/UserMeControl';
 import '../app.css';
 
@@ -7,10 +8,10 @@ class User extends React.Component {
 		return (
 			<div className="header">
 				<div className="header-logo">
-					<h1>EDRC</h1>
+					<h1><Link to="/">EDRC</Link></h1>
 					<span className="status">alpha</span>
 				</div>
-			<UserMeControl />
+				<UserMeControl />
 			</div>
 		);
 	}

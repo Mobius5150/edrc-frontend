@@ -1,10 +1,10 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import { render } from 'react-snapshot';
 import './index.css';
 
 import Routes from './Routes';
 
-ReactDOM.render(
+render(
 	<Routes/>,
 	document.getElementById('root')
 );

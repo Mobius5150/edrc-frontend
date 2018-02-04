@@ -83,6 +83,35 @@
 				.build-status {
 					margin-left: 10px;
 				}
+
+				.commit {
+					margin-left: 10px;
+					font-family: monospace;
+					background-color: @backgroundPrimary;
+					padding: 4px;
+				}
+				
+				.commit-author {
+					font-size: 0.9em;
+					margin-left: 10px;
+					visibility: hidden;
+
+					a {
+						color: @foregroundPrimary;
+						text-decoration: none;
+
+						&:hover {
+							color: @foregroundSecondary;
+							text-decoration: underline;
+						}
+					}
+				}
+			}
+
+			&.expanded, .build-summary:hover {
+				.build-header .commit-author {
+					visibility: visible;
+				}
 			}
 
 			.build-details {
@@ -123,6 +152,16 @@
 					padding-right: 0;
 					padding-top: 0;
 					flex: 1;
+
+					.build-file-image {
+						@border-padding: -4px;
+						max-width: 50%;
+						margin: @border-padding (@build-padding + @border-padding) @border-padding @border-padding;
+
+						img  {
+							max-width: 100%;
+						}
+					}
 
 					.errors {
 						max-height: 500px;

@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+	<title>{{title}}</title>
+	<link rel="stylesheet" type="text/css" href="/style.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.9.0/themes/prism-coy.min.css" integrity="sha256-OPRaIzpiEHvHfgydlnA/89k9d55T02hawuzgWygdLls=" crossorigin="anonymous" />
+ </head>
+</head>
+<body>
+	<div class="header">
+		<div class="header-logo">
+			<h1><a href="//../">EDRC</a></h1>
+			<span class="status">alpha</span>
+		</div>
+	</div>
+	<div class="doc-body">
+		<div class="sidebar">
+			<h1><a href="/">Documentation</a></h1>
+			<div class="links">
+				<h2>Guides</h2>
+				<ul>
+					{{#each collections.guides}}
+						<li>
+							<a href="/{{path}}">
+								{{#if linkTitle}}
+									{{linkTitle}}
+								{{else}}
+									{{baseTitle}}
+								{{/if}}</a>
+						</li>
+					{{/each}}
+				</ul>
+				<h2>Reference</h2>
+				<ul>
+					{{#each collections.reference}}
+						<li>
+							<a href="/{{path}}">{{#if linkTitle}}{{linkTitle}}{{else}}{{baseTitle}}{{/if}}</a>
+						</li>
+					{{/each}}
+				</ul>
+				<h2>About</h2>
+				<ul>
+					{{#each collections.about}}
+						<li>
+							<a href="/{{path}}">{{#if linkTitle}}{{linkTitle}}{{else}}{{baseTitle}}{{/if}}</a>
+						</li>
+					{{/each}}
+				</ul>
+			</div>
+		</div>
+		<div class="doc">
+			{{{contents}}}
+		</div>
+	</div>
+</body>
+</html>
