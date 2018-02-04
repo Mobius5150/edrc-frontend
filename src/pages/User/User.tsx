@@ -86,6 +86,7 @@ export class User extends React.Component<IUserProps, IUserState> {
 					{...userParams}
 					project={this.state.selectedProject}
 					onProjectSelected={(p) => this.onProjectSelected(p)}
+					onLoadComplete={() => this.setState({...this.state, loading: false})}
 					ref={bar => this.userProjectsBar = bar}
 				/>
 				{this.state.loading ?
