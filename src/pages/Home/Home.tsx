@@ -48,16 +48,50 @@ class Home extends React.Component <IGenericRouteProps, IHomeState> {
 			return (<UserPage {...this.props} {...params} />);
 		}
 
+		const introItems = [
+			{
+				id: 'collab',
+				img: '/images/front-octocat-2x.png',
+				text: 'Collaborate on GitHub'
+			},
+			{
+				id: 'drc',
+				img: '/images/front-magglass.png',
+				text: 'EDRC checks design rules on every change'
+			},
+			{
+				id: 'design-images',
+				img: '/images/front-camera.png',
+				text: 'Generate images of your design at each stage'
+			},
+			{
+				id: 'gerber',
+				img: '/images/front-gears.png',
+				text: 'Gerber files available instantly'
+			}
+		];
+
 		return (
 			<div className="home">
 				<div className="home-header">
-					<h2>Welcome to EDRC</h2>
+					<h1>Collaborate with Confidence</h1>
+					<h2 className="byline">EDRC is a free tool to automate design and electrical checks in Eagle.</h2>
 				</div>
 				<div className="home-intro">
-					<p>EDRC is a free tool to automate design and electrical checks in Eagle.</p>
-					<p>It only takes a couple minutes to setup EDRC to automatically check your
-						GitHub projects for errors in your Eagle CAD designs. Get started by signing in
-						below!</p>
+					{introItems.map(i => 
+						<div key={i.id} className="intro-item">
+							<img src={i.img} title={i.text} />
+							<span>{i.text}</span>
+						</div>
+					)}
+				</div>
+				<div className="home-login">
+					<a className="login" href="/login" target="_self" title="Login with GitHub">
+						Login with GitHub
+					</a>
+					<a className="read-the-docs" href="/docs" target="_self" title="Read the documentation">
+						Read the documentation
+					</a>
 				</div>
 			</div>
 		);
