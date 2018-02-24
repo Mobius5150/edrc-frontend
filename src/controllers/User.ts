@@ -58,6 +58,7 @@ export class UserController {
 		UserController.CurrentUserPromise = new Promise<IUser>(async (resolve, reject) => {
 			const userResponse = await this.edrcClient({ path: 'api/v1/user/current'});
 			if (userResponse.status.code !== 200) {
+				ga('set', 'dimension1', 'unauthenticated');
 				reject(new Error(`User Response ${userResponse.status.text}`));
 			} else {
 				UserController.CurrentUser = this.toUser(userResponse.entity);
