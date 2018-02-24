@@ -40,3 +40,50 @@ export function analyticsDimension(dimension: GoogleAppDimension, value: any) {
 	// @ts-ignore
 	gtag('event', 'dimension', obj);
 }
+
+export function analyticsError(object: Object | null, f: Function | string, error: Error | string, fatal: boolean = false) {
+	try {
+		let objectName: string | null = '[unknown]';
+		let funcName = '[unknown]';
+		if (object) {
+			// @ts-ignore
+			if (object.name) {
+				// @ts-ignore
+				objectName = object.name;
+			} else if (object.constructor && object.constructor.name) {
+				objectName = object.constructor.name;
+			}
+		} else if (object === null) {
+			objectName = null;
+		}
+
+		if (typeof f === 'function') {
+			if (f && f.name) {
+				funcName = f.name;
+			}
+		} else if (f) {
+			funcName = f;
+		}
+
+		let errorText = error;
+		if (error instanceof Error) {
+			errorText = error.message;
+		}
+
+		if (objectName === null) {
+			logException(`${funcName}(): ${errorText}`, fatal);
+		} else {
+			logException(`${objectName}::${funcName}(): ${errorText}`, fatal);
+		}
+	} catch (e) {
+		logException(`[analyticsError]: ${error} (${e})`, fatal);
+	}
+}
+
+function logException(description: string, fatal: boolean) {
+	// @ts-ignore
+	gtag('event', 'exception', {
+		description,
+		fatal
+	});
+}

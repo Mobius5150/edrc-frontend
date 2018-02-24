@@ -8,7 +8,7 @@ import { IBuildListResult } from '../../Models/Build';
 import { BuildListItem } from './BuildListItem';
 import { BuildStatusControl } from '../BuildStatusControl';
 import './style.css';
-import { AnalyticsActions, AnalyticsCategories, ProjectAnalyticsActions, analyticsEvent } from '../../util/Analytics';
+import { AnalyticsActions, AnalyticsCategories, ProjectAnalyticsActions, analyticsEvent, analyticsError } from '../../util/Analytics';
 
 interface IUserProjectsPanelProps {
 	username: string;
@@ -101,13 +101,19 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 	loadProject() {
 		this.projectController.getUserProject(this.username, this.project, 1)
 			.then(project => this.setState({...this.state, project, loading: false}))
-			.catch(e => this.setState({...this.state, project: null, loading: false, projectError: e}));
+			.catch(e => {
+				analyticsError(this, this.loadProject, e);
+				this.setState({...this.state, project: null, loading: false, projectError: e});
+			});
 	}
 
 	loadBuilds() {
 		this.buildController.getProjectBuilds(this.username, this.project, { filter: 'summary' }, 1)
 			.then(builds => this.setState({...this.state, builds, buildsLoading: false}))
-			.catch(e => this.setState({...this.state, builds: null, buildsLoading: false, buildsError: e}));
+			.catch(e => {
+				analyticsError(this, this.loadBuilds, e);
+				this.setState({...this.state, builds: null, buildsLoading: false, buildsError: e});
+			});
 	}
 
 	render() {
@@ -306,6 +312,7 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 			await this.projectController.deactivateUserProject(project.ownerName, project.name);
 		} catch (e) {
 			const message = e instanceof Error ? e.message : e;
+			analyticsError(this, this.deactivateProjectClicked, e);
 			alert(`An error occured deactivating the project: ${message}.\n Please reload and try again.`);
 		}
 

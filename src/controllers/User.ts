@@ -1,6 +1,6 @@
 import { Edrc, Client } from './Edrc';
 import { ObjectCache } from '../util/ObjectCache';
-import { GoogleAppDimension, analyticsDimension } from '../util/Analytics';
+import { GoogleAppDimension, analyticsDimension, analyticsError } from '../util/Analytics';
 
 export interface IUser {
 	id: string;
@@ -19,6 +19,14 @@ export interface IUser {
 
 export interface IGetUserProjectsParams {
 	filter?: 'activated' | 'owner' | 'collaborator' | 'organization_member';
+}
+
+export class NotAuthenticatedError extends Error {
+	public readonly isNotAuthenticatedError: boolean = true;
+	constructor() {
+		super('User not authenticated');
+		Object.setPrototypeOf(this, NotAuthenticatedError.prototype);
+	}
 }
 
 export class UserController {
@@ -58,9 +66,14 @@ export class UserController {
 
 		UserController.CurrentUserPromise = new Promise<IUser>(async (resolve, reject) => {
 			const userResponse = await this.edrcClient({ path: 'api/v1/user/current'});
-			if (userResponse.status.code !== 200) {
+			if (userResponse.status.code === 404) {
 				analyticsDimension(GoogleAppDimension.Authentication, 'unauthenticated');
-				reject(new Error(`User Response ${userResponse.status.text}`));
+				reject(new NotAuthenticatedError());
+			} else if (userResponse.status.code !== 200) {
+				const error = new Error(`User Response ${userResponse.status.text}`);
+				analyticsDimension(GoogleAppDimension.Authentication, 'unauthenticated');
+				analyticsError(this, this.getCurrentUser, error);
+				reject(error);
 			} else {
 				UserController.CurrentUser = this.toUser(userResponse.entity);
 				UserController.CurrentUserPromise = 'loaded';

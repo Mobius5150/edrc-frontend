@@ -7,7 +7,7 @@ import { IProject } from '../../Models/Project';
 import { UserProjectsList } from '../UserProjectsList/UserProjectsLists';
 import { IGenericRouteProps } from '../../util/Route';
 import './style.css';
-import { AnalyticsCategories, AnalyticsActions, ProjectAnalyticsActions, analyticsEvent } from '../../util/Analytics';
+import { AnalyticsCategories, AnalyticsActions, ProjectAnalyticsActions, analyticsEvent, analyticsError } from '../../util/Analytics';
 
 interface IUserProjectsBarProps extends IGenericRouteProps {
 	username: string;
@@ -76,7 +76,10 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 						this.selectProject(projects[0], false);
 					}
 				})
-				.catch(e => this.updateState({user: null, signedIn: false, loading: false}));
+				.catch(e => {
+					analyticsError(this, this.loadUserProjects, e);
+					this.updateState({user: null, signedIn: false, loading: false});
+				});
 		}
 	}
 
@@ -169,6 +172,7 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 			this.loadUserProjects();
 			this.selectProject(activated);
 		} catch (e) {
+			analyticsError(this, this.selectNewProject, e);
 			this.updateState({loading: false});
 		}
 	}

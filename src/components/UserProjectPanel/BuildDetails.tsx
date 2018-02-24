@@ -4,7 +4,7 @@ import { IProjectBuild, IPublicBuildDetails, IPublicBuildFileSummary, IBuildFile
 import { BuildController } from '../../controllers/Build';
 import classNames from 'classnames';
 import BuildImageControl from '../BuildImageControl/BuildImageControl';
-import { AnalyticsCategories, BuildAnalyticsActions, analyticsEvent } from '../../util/Analytics';
+import { AnalyticsCategories, BuildAnalyticsActions, analyticsEvent, analyticsError } from '../../util/Analytics';
 
 interface IBuildDetailsProps {
 	build: IProjectBuild;
@@ -70,7 +70,10 @@ export class BuildDetails extends React.Component <IBuildDetailsProps, IBuildDet
 
 					this.setState({...this.state, error: null, loading: false, details, selectedFileName});
 				})
-				.catch(error => this.setState({...this.state, details: null, loading: false, error }));
+				.catch(error => {
+					analyticsError(this, this.loadBuildDetails, error);
+					this.setState({...this.state, details: null, loading: false, error });
+				});
 		}
 	}
 
@@ -88,7 +91,10 @@ export class BuildDetails extends React.Component <IBuildDetailsProps, IBuildDet
 					this.setState({ ...this.state, currentFileErrors: sorted, loadCurrentFileError: null });
 				}
 			})
-			.catch(e => {this.setState({ ...this.state, currentFileErrors: null, loadCurrentFileError: e }); });
+			.catch(e => {
+				analyticsError(this, this.loadFileErrors, e);
+				this.setState({ ...this.state, currentFileErrors: null, loadCurrentFileError: e });
+			});
 	}
 
 	private sortFileErrors(errors: IBuildFileErrorsContract) {

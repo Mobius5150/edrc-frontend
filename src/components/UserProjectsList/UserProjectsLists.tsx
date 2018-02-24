@@ -3,6 +3,7 @@ import { UserController, IUser } from '../../controllers/User';
 import { ProjectController } from '../../controllers/Project';
 import { IProject } from '../../Models/Project';
 import './style.css';
+import { analyticsError } from '../../util/Analytics';
 
 interface IUserProjectsListProps {
 	username: string;
@@ -58,7 +59,10 @@ export class UserProjectsList extends React.Component <IUserProjectsListProps, I
 		if (!(this.state.projects)) {
 			this.projectController.getUserProjects(this.username, { filter: 'owner' }, 1)
 				.then(projects => this.setState({...this.state, projects, loading: false}))
-				.catch(e => this.setState({...this.state, user: null, signedIn: false, loading: false}));
+				.catch(e => {
+					analyticsError(this, this.loadUserProjects, e);
+					this.setState({...this.state, user: null, signedIn: false, loading: false});
+				});
 		}
 	}
 

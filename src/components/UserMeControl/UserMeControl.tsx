@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { UserController, IUser } from '../../controllers/User';
 import { resolve as urlResolve } from 'url';
 import './style.css';
-import { AnalyticsCategories, AnalyticsActions, analyticsEvent } from '../../util/Analytics';
+import { AnalyticsCategories, AnalyticsActions, analyticsEvent, analyticsError } from '../../util/Analytics';
 
 interface IUserMeControlState {
 	signedIn: boolean;
@@ -33,6 +33,7 @@ export class UserMeControl extends React.Component <any, IUserMeControlState> {
 		this.userController.getCurrentUser()
 			.then(user => this.setState({...this.state, signedIn: user !== null, user }))
 			.catch(e => {
+				analyticsError(this, 'loadUser', e);
 				this.setState({...this.state, signedIn: false});
 			});
 
