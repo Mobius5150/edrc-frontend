@@ -63,6 +63,7 @@ export class UserController {
 				UserController.CurrentUser = this.toUser(userResponse.entity);
 				UserController.CurrentUserPromise = 'loaded';
 				UserController.Cache.addToCache(UserController.CurrentUser, 1);
+				ga('set', 'dimension1', UserController.CurrentUser.github ? 'github' : 'other');
 				resolve(UserController.CurrentUser);
 			}
 		});
