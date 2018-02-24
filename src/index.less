@@ -90,6 +90,34 @@ body, html {
 	}
 }
 
+.header-alpha-notice {
+	@width: 300px;
+	color: @betaBadgeTextColor;
+	background-color: @betaBadgeColor;
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: @width;
+	height: @headerHeight;
+	margin-left: -@width/2;
+	padding: 0 10px;
+	text-align: center;
+
+	h2 {
+		font-size: 1em;
+		margin: 7px;
+	}
+
+	a {
+		color: @betaBadgeTextColor;
+		display: block;
+
+		&:hover {
+			font-weight: bold;
+		}
+	}
+}
+
 .notFound {
 	color: @foregroundPrimary;
 }

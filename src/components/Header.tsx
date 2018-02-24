@@ -6,13 +6,19 @@ import '../app.css';
 class User extends React.Component {
 	render() {
 		return (
-			<div className="header">
-				<div className="header-logo">
-					<h1><Link to="/">EDRC</Link></h1>
-					<span className="status">alpha</span>
+			<>
+				<div className="header">
+					<div className="header-logo">
+						<h1><Link to="/">EDRC</Link></h1>
+						<span className="status">alpha</span>
+					</div>
+					<div className="header-alpha-notice top-notice">
+						<h2>EDRC is in Alpha</h2>
+						<Link to="/docs/about/feedback" target="_self">Please send us bugs and feedback!</Link>
+					</div>
+					<UserMeControl />
 				</div>
-				<UserMeControl />
-			</div>
+			</>
 		);
 	}
 }
