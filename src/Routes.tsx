@@ -12,7 +12,7 @@ import NotFound from './pages/NotFound/NotFound';
 // TODO: Get rid of this stupid div
 const Routes = (props: any) => (
 	<BrowserRouter {...props}>
-		<div>
+		<>
 			<Route component={Header} />
 			<Switch>
 				<Route exact={true} path="/" component={Home} />
@@ -21,7 +21,7 @@ const Routes = (props: any) => (
 				<Route path="/g/:username" component={User} />
 				<Route path="*" component={NotFound} />
 			</Switch>
-		</div>
+		</>
 	</BrowserRouter>
 );
 

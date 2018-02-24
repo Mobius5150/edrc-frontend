@@ -136,7 +136,7 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 				</div>
 				{this.renderBuilds()}
 				<Modal
-					className="embed-status-modal"
+					className="app-modal project-settings-modal"
 					isOpen={this.state.settingsVisible}
 					onRequestClose={() => this.closeProjectSettings()}
 					contentLabel="Embed Build Status"
