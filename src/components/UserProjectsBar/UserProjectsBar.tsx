@@ -104,12 +104,12 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 					</div>
 				</div>
 				<Modal
-					className="add-project-modal"
+					className="app-modal add-project-modal"
 					isOpen={this.state.modalIsOpen}
 					onRequestClose={() => this.closeModal()}
 					contentLabel="Add Project"
 				>
-					<h1>Add a project</h1>
+					<h1>Add a Project from GitHub</h1>
 					<UserProjectsList
 						username={this.props.username}
 						onProjectSelected={(p) => this.selectNewProject(p)}

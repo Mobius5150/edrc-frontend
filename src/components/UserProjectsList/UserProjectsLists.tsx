@@ -63,7 +63,7 @@ export class UserProjectsList extends React.Component <IUserProjectsListProps, I
 	}
 
 	render() {
-		const projects = this.state.projects || [];
+		
 		return (
 			<div className="user-projects-list">
 				{this.state.loading && <div className="loading" />}
@@ -72,17 +72,32 @@ export class UserProjectsList extends React.Component <IUserProjectsListProps, I
 						<p>An error occured loading user projects. Please reload and try again.</p>
 					</div>
 				}
-				<div className="projects">
-					{projects.map(project => (
-						<div
-							className="project-listing" 
-							key={project.fullName} 
-							onClick={() => this.handleProjectSelection(project)}
-						>
-							{project.fullName}
-						</div>
-					))}
+				{!this.state.loading && this.renderUserProjects()}
+			</div>
+		);
+	}
+
+	renderUserProjects() {
+		const projects = this.state.projects || [];
+		if (projects.length === 0) {
+			return (
+				<div className="projects empty">
+					<span className="empty">You don't have any projects on GitHub. Create one to get started!</span>
 				</div>
+			);
+		}
+
+		return (
+			<div className="projects">
+				{projects.map(project => (
+					<div
+						className="project-listing" 
+						key={project.fullName} 
+						onClick={() => this.handleProjectSelection(project)}
+					>
+						{project.fullName}
+					</div>
+				))}
 			</div>
 		);
 	}

@@ -100,7 +100,7 @@ export class BuildStatusControl extends React.Component <IBuildStatusControlProp
 					<div onClick={e => e.stopPropagation()}>
 						{embed && this.state.embedModalOpen &&
 							<Modal
-								className="embed-status-modal"
+								className="app-modal embed-modal embed-status-modal"
 								isOpen={this.state.embedModalOpen}
 								onRequestClose={() => this.closeModal()}
 								contentLabel="Embed Build Status"

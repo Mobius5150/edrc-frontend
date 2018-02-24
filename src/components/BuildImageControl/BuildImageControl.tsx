@@ -109,7 +109,7 @@ export class BuildImageControl extends React.Component <IBuildImageControlProps,
 					<div onClick={e => e.stopPropagation()}>
 						{embed && this.state.embedModalOpen &&
 							<Modal
-								className="embed-file-modal"
+								className="app-modal embed-modal embed-file-modal"
 								isOpen={this.state.embedModalOpen}
 								onRequestClose={() => this.closeModal()}
 								contentLabel="Embed Build Image"

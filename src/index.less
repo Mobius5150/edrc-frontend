@@ -140,6 +140,82 @@ button {
 	}
 }
 
+.app-modal {
+	@elementPadding: 10px;
+
+	background-color: @backgroundSecondary;
+	color: @foregroundPrimary;
+    padding: @elementPadding;
+	border-radius: 4px;
+	margin: 50px auto;
+	width: 500px;
+
+    h1 {
+		color: @foregroundPrimary;
+		margin: 0;
+		padding: 0;
+		padding-bottom: @elementPadding;
+	}
+	
+	button {
+		margin: @elementPadding auto 0 auto;
+	}
+
+	& > div {
+		padding: @elementPadding 0 0 0;
+		margin: 0;
+	}
+	
+	&.embed-modal .embed-source {
+		padding: @elementPadding;
+		background-color: @foregroundPrimary;
+		color: @backgroundPrimary;
+		border-radius: @elementPadding/2;
+		margin: @elementPadding 0 0 0;
+		font-size: 1em;
+
+		pre {
+			padding: 0;
+			margin: 0;
+			white-space: pre-wrap;
+			white-space: -moz-pre-wrap;
+			white-space: -pre-wrap;
+			white-space: -o-pre-wrap;
+			word-wrap: break-word;
+		}
+	}
+
+	&.embed-modal .embed-doc {
+		margin: 0 -@elementPadding;
+		background-color: @backgroundPrimary;
+		color: @foregroundPrimary;
+		padding: @elementPadding @elementPadding;
+
+		strong {
+			color: @foregroundTertiary;
+		}
+	}
+
+	&.embed-modal .embed-preview {
+		img {
+			max-height: 200px;
+			max-width: 100%;
+		}
+	}
+
+	a {
+		color: @foregroundPrimary;
+
+		&:visited {
+			color: @foregroundSecondary;
+		}
+
+		&:hover {
+			color: @foregroundTertiary;
+		}
+	}
+}
+
 @keyframes loading {
 	to { transform: rotate(360deg); }
 }
