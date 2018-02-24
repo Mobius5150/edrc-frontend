@@ -102,14 +102,6 @@ export class UserProjectsList extends React.Component <IUserProjectsListProps, I
 		);
 	}
 
-	openModal() {
-		this.setState({...this.state, modalIsOpen: true});
-	}
-
-	closeModal() {
-		this.setState({...this.state, modalIsOpen: false});
-	}
-
 	private handleProjectSelection(project: IProject) {
 		if (this.props.onProjectSelected) {
 			this.props.onProjectSelected(project);

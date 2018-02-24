@@ -5,6 +5,7 @@ import { BuildDetails } from './BuildDetails';
 import classNames from 'classnames';
 import * as moment from 'moment';
 import { BuildStatusControl } from '../BuildStatusControl/index';
+import { AnalyticsCategories, AnalyticsActions } from '../../util/Analytics';
 
 interface IBuildListItemProps {
 	build: IProjectBuild;
@@ -103,7 +104,15 @@ export class BuildListItem extends React.Component <IBuildListItemProps, IBuildL
 	}
 
 	onExpandCollapse = () => {
-		this.setState({ ...this.state, expanded: !this.state.expanded });
+		const expanded = !this.state.expanded;
+		const label = this.props.fromGitRef ? 'gitref' : 'buildno';
+		if (expanded) {
+			ga('send', 'event', AnalyticsCategories.Builds, AnalyticsActions.Open, label);
+		} else {
+			ga('send', 'event', AnalyticsCategories.Builds, AnalyticsActions.Close, label);
+		}
+
+		this.setState({ ...this.state, expanded});
 	}
 
 	private getCleanGitRefName(branchRef: string): string {

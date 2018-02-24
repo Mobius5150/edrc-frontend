@@ -5,6 +5,7 @@
   "dependencies": {
     "@types/classnames": "^2.2.3",
     "@types/deep-extend": "^0.4.30",
+    "@types/google.analytics": "0.0.38",
     "@types/moment": "^2.13.0",
     "@types/react-modal": "^2.2.2",
     "@types/react-router": "^4.0.17",

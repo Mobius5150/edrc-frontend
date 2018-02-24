@@ -3,6 +3,7 @@ import * as Modal from 'react-modal';
 import * as url from 'url';
 import classNames from 'classnames';
 import './style.css';
+import { AnalyticsCategories, AnalyticsActions } from '../../util/Analytics';
 
 interface IBuildImageControlState {
 	embedModalOpen: boolean;
@@ -143,6 +144,7 @@ export class BuildImageControl extends React.Component <IBuildImageControlProps,
 	}
 
 	private openModal(e: React.MouseEvent<any>) {
+		ga('send', 'event', AnalyticsCategories.Embeds, AnalyticsActions.Open, 'build image');
 		if (this.props.enableEmbed && !this.state.embedModalOpen) {
 			if (e && e.stopPropagation()) {
 				e.stopPropagation();
@@ -153,6 +155,7 @@ export class BuildImageControl extends React.Component <IBuildImageControlProps,
 	}
 
 	private closeModal() {
+		ga('send', 'event', AnalyticsCategories.Embeds, AnalyticsActions.Close, 'build image');
 		this.setState({...this.state, embedModalOpen: false});
 	}
 

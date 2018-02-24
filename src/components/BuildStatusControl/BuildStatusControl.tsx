@@ -3,6 +3,7 @@ import * as Modal from 'react-modal';
 import * as url from 'url';
 import classNames from 'classnames';
 import './style.css';
+import { AnalyticsCategories, AnalyticsActions } from '../../util/Analytics';
 
 interface IBuildStatusControlState {
 	embedModalOpen: boolean;
@@ -137,6 +138,7 @@ export class BuildStatusControl extends React.Component <IBuildStatusControlProp
 	}
 
 	private openModal(e: React.MouseEvent<any>) {
+		ga('send', 'event', AnalyticsCategories.Embeds, AnalyticsActions.Open, 'build status');
 		if (this.props.enableEmbed && !this.state.embedModalOpen) {
 			if (e && e.stopPropagation()) {
 				e.stopPropagation();
@@ -147,6 +149,7 @@ export class BuildStatusControl extends React.Component <IBuildStatusControlProp
 	}
 
 	private closeModal() {
+		ga('send', 'event', AnalyticsCategories.Embeds, AnalyticsActions.Close, 'build status');
 		this.setState({...this.state, embedModalOpen: false});
 	}
 

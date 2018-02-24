@@ -4,6 +4,7 @@ import { IProjectBuild, IPublicBuildDetails, IPublicBuildFileSummary, IBuildFile
 import { BuildController } from '../../controllers/Build';
 import classNames from 'classnames';
 import BuildImageControl from '../BuildImageControl/BuildImageControl';
+import { AnalyticsCategories, BuildAnalyticsActions } from '../../util/Analytics';
 
 interface IBuildDetailsProps {
 	build: IProjectBuild;
@@ -304,6 +305,7 @@ export class BuildDetails extends React.Component <IBuildDetailsProps, IBuildDet
 	}
 
 	selectFile(file: IPublicBuildFileSummary): void {
+		ga('send', 'event', AnalyticsCategories.Builds, BuildAnalyticsActions.ChangeFile);
 		const fileName = file.normalizedFilename;
 		if (this.fileErrors[fileName]) {
 			this.setState({ ...this.state, selectedFileName: fileName, currentFileErrors: this.fileErrors[fileName] });

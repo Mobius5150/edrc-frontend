@@ -8,6 +8,7 @@ import { IBuildListResult } from '../../Models/Build';
 import { BuildListItem } from './BuildListItem';
 import { BuildStatusControl } from '../BuildStatusControl';
 import './style.css';
+import { AnalyticsActions, AnalyticsCategories, ProjectAnalyticsActions } from '../../util/Analytics';
 
 interface IUserProjectsPanelProps {
 	username: string;
@@ -278,10 +279,12 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 	}
 
 	private openProjectSettings() {
+		ga('send', 'event', AnalyticsCategories.Projects, AnalyticsActions.Open, 'project settings');
 		this.setState({...this.state, settingsVisible: true});
 	}
 
 	private closeProjectSettings() {
+		ga('send', 'event', AnalyticsCategories.Projects, AnalyticsActions.Close, 'project settings');
 		this.setState({...this.state, settingsVisible: false});
 	}
 
@@ -299,6 +302,7 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 		}
 
 		try {
+			ga('send', 'event', AnalyticsCategories.Projects, ProjectAnalyticsActions.Deactivate, `${project.ownerName}/${project.name}`);
 			await this.projectController.deactivateUserProject(project.ownerName, project.name);
 		} catch (e) {
 			const message = e instanceof Error ? e.message : e;
