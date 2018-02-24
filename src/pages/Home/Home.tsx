@@ -3,6 +3,7 @@ import { UserController, IUser } from '../../controllers/User';
 import { User as UserPage } from '../User/User';
 import { IGenericRouteProps } from '../../util/Route';
 import './style.css';
+import { AnalyticsCategories, AnalyticsActions } from '../../util/Analytics';
 
 interface IHomeState {
 	loading: boolean;
@@ -86,15 +87,19 @@ class Home extends React.Component <IGenericRouteProps, IHomeState> {
 					)}
 				</div>
 				<div className="home-login">
-					<a className="login" href="/login" target="_self" title="Login with GitHub">
+					<a className="login" href="/login" target="_self" title="Login with GitHub" onClick={() => this.linkClicked('Login with GitHub')}>
 						Login with GitHub
 					</a>
-					<a className="read-the-docs" href="/docs" target="_self" title="Read the documentation">
+					<a className="read-the-docs" href="/docs" target="_self" title="Read the documentation" onClick={() => this.linkClicked('Read the documentation')}>
 						Read the documentation
 					</a>
 				</div>
 			</div>
 		);
+	}
+
+	private linkClicked(label: string) {
+		ga('send', 'event', AnalyticsCategories.Home, AnalyticsActions.Click, label);
 	}
 }
 

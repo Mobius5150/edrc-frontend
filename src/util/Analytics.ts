@@ -2,7 +2,8 @@ export const enum AnalyticsCategories {
 	Embeds = 'Embeds',
 	Builds = 'Builds',
 	Projects = 'Projects',
-	Account = 'Account'
+	Account = 'Account',
+	Home = 'Home'
 }
 
 export const enum AnalyticsActions {
