@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as Modal from 'react-modal';
 import { ProjectController } from '../../controllers/Project';
 import { BuildController } from '../../controllers/Build';
+import { UserController } from '../../controllers/User';
 import { IProject } from '../../Models/Project';
 import { IBuildListResult } from '../../Models/Build';
 import { BuildListItem } from './BuildListItem';
@@ -22,9 +23,11 @@ interface IUserProjectsPanelState {
 	projectError: Error | null;
 	buildsError: Error | null;
 	settingsVisible: boolean;
+	showSettingsCog: boolean;
 }
 
 export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, IUserProjectsPanelState> {
+	private userController: UserController;
 	private projectController: ProjectController;
 	private buildController: BuildController;
 	private username: string;
@@ -36,6 +39,7 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 		this.project = this.props.project;
 		this.projectController = new ProjectController();
 		this.buildController = new BuildController();
+		this.userController = new UserController();
 		this.state = {
 			loading: true,
 			buildsLoading: true,
@@ -43,7 +47,8 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 			builds: null,
 			projectError: null,
 			buildsError: null,
-			settingsVisible: false
+			settingsVisible: false,
+			showSettingsCog: false
 		};
 	}
 
@@ -62,6 +67,8 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 		if (loaded) {
 			this.setState({...this.state, loading: false, buildsLoading: false});
 		}
+
+		this.checkProjectOwnership();
 	}
 
 	componentWillReceiveProps(nextProps: any) {
@@ -126,34 +133,38 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 						enableEmbed={true}
 						enableEmbedText={true}
 					/>
-					<div
-						className="project-settings"
-						onClick={() => this.openProjectSettings()}
-						title="Project settings"
-					>
-						<span className="ion-gear-a" />
-					</div>
+					{this.state.showSettingsCog && 
+						<div
+							className="project-settings"
+							onClick={() => this.openProjectSettings()}
+							title="Project settings"
+						>
+							<span className="ion-gear-a" />
+						</div>
+					}
 				</div>
 				{this.renderBuilds()}
-				<Modal
-					className="app-modal project-settings-modal"
-					isOpen={this.state.settingsVisible}
-					onRequestClose={() => this.closeProjectSettings()}
-					contentLabel="Embed Build Status"
-				>
-					<h1>Project Settings</h1>
-					<div className="settings">
-						<div className="setting-dangerous">
-							<button
-								className="button-dangerous"
-								onClick={(e) => this.deactivateProjectClicked(e)}
-							>
-								Disable Project
-							</button>
+				{this.state.showSettingsCog &&
+					<Modal
+						className="app-modal project-settings-modal"
+						isOpen={this.state.settingsVisible}
+						onRequestClose={() => this.closeProjectSettings()}
+						contentLabel="Embed Build Status"
+					>
+						<h1>Project Settings</h1>
+						<div className="settings">
+							<div className="setting-dangerous">
+								<button
+									className="button-dangerous"
+									onClick={(e) => this.deactivateProjectClicked(e)}
+								>
+									Disable Project
+								</button>
+							</div>
 						</div>
-					</div>
-					<button onClick={() => this.closeProjectSettings()}>close</button>
-				</Modal>
+						<button onClick={() => this.closeProjectSettings()}>close</button>
+					</Modal>
+				}
 			</div>
 		);
 	}
@@ -249,6 +260,21 @@ export class UserProjectPanel extends React.Component <IUserProjectsPanelProps, 
 					/>)}
 			</div>
 		);
+	}
+
+	private async checkProjectOwnership() {
+		const signedIn = await this.userController.isSignedIn();
+		if (!signedIn) {
+			this.setState({...this.state, showSettingsCog: false});
+			return;
+		}
+
+		const user = await this.userController.getCurrentUser();
+		if (user.username.toLowerCase() === this.props.username.toLowerCase()) {
+			this.setState({...this.state, showSettingsCog: true});
+		} else {
+			this.setState({...this.state, showSettingsCog: false});
+		}
 	}
 
 	private openProjectSettings() {
