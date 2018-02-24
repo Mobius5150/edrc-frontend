@@ -63,7 +63,7 @@ class Home extends React.Component <IGenericRouteProps, IHomeState> {
 			{
 				id: 'design-images',
 				img: '/images/front-camera.png',
-				text: 'Generate images of your design at each stage'
+				text: 'Generate images of your PCB at each stage'
 			},
 			{
 				id: 'gerber',
@@ -76,7 +76,7 @@ class Home extends React.Component <IGenericRouteProps, IHomeState> {
 			<div className="home">
 				<div className="home-header">
 					<h1>Collaborate with Confidence</h1>
-					<h2 className="byline">EDRC is a free tool to automate design and electrical checks in Eagle.</h2>
+					<h2 className="byline">EDRC is a free tool to automate design and electrical checks in Eagle CAD.</h2>
 				</div>
 				<div className="home-intro">
 					{introItems.map(i => 
