@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { UserController, IUser } from '../../controllers/User';
 import { resolve as urlResolve } from 'url';
 import './style.css';
-import { AnalyticsCategories, AnalyticsActions } from '../../util/Analytics';
+import { AnalyticsCategories, AnalyticsActions, analyticsEvent } from '../../util/Analytics';
 
 interface IUserMeControlState {
 	signedIn: boolean;
@@ -42,9 +42,9 @@ export class UserMeControl extends React.Component <any, IUserMeControlState> {
 	toggleMenuDropdown() {
 		const menuHidden = !this.state.menuHidden;
 		if (menuHidden) {
-			ga('send', 'event', AnalyticsCategories.Account, AnalyticsActions.Close, 'me control');
+			analyticsEvent(AnalyticsCategories.Account, AnalyticsActions.Close, 'me control');
 		} else {
-			ga('send', 'event', AnalyticsCategories.Account, AnalyticsActions.Open, 'me control');
+			analyticsEvent(AnalyticsCategories.Account, AnalyticsActions.Open, 'me control');
 		}
 
 		this.setState({...this.state, menuHidden});

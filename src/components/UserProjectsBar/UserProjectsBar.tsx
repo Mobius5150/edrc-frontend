@@ -7,7 +7,7 @@ import { IProject } from '../../Models/Project';
 import { UserProjectsList } from '../UserProjectsList/UserProjectsLists';
 import { IGenericRouteProps } from '../../util/Route';
 import './style.css';
-import { AnalyticsCategories, AnalyticsActions, ProjectAnalyticsActions } from '../../util/Analytics';
+import { AnalyticsCategories, AnalyticsActions, ProjectAnalyticsActions, analyticsEvent } from '../../util/Analytics';
 
 interface IUserProjectsBarProps extends IGenericRouteProps {
 	username: string;
@@ -122,18 +122,18 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 	}
 
 	private openModal() {
-		ga('send', 'event', AnalyticsCategories.Projects, AnalyticsActions.Open, 'new project');
+		analyticsEvent(AnalyticsCategories.Projects, AnalyticsActions.Open, 'new project');
 		this.setState({...this.state, modalIsOpen: true});
 	}
 
 	private closeModal() {
-		ga('send', 'event', AnalyticsCategories.Projects, AnalyticsActions.Close, 'new project');
+		analyticsEvent(AnalyticsCategories.Projects, AnalyticsActions.Close, 'new project');
 		this.setState({...this.state, modalIsOpen: false});
 	}
 
 	private selectProject(project: IProject, navigate: Boolean = true) {
 		if (this.state.selectedProject !== project.fullName) {
-			ga('send', 'event', AnalyticsCategories.Projects, AnalyticsActions.Click, 'project');
+			analyticsEvent(AnalyticsCategories.Projects, AnalyticsActions.Click, 'project');
 			
 			this.updateState({selectedProject: project.fullName});
 			if (navigate) {
@@ -160,7 +160,7 @@ export class UserProjectsBar extends React.Component <IUserProjectsBarProps, IUs
 	}
 
 	private async selectNewProject(p: IProject) {
-		ga('send', 'event', AnalyticsCategories.Projects, ProjectAnalyticsActions.Activate);
+		analyticsEvent(AnalyticsCategories.Projects, ProjectAnalyticsActions.Activate);
 		this.updateState({modalIsOpen: false, loading: true});
 
 		try {

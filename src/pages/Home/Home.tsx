@@ -3,7 +3,7 @@ import { UserController, IUser } from '../../controllers/User';
 import { User as UserPage } from '../User/User';
 import { IGenericRouteProps } from '../../util/Route';
 import './style.css';
-import { AnalyticsCategories, AnalyticsActions } from '../../util/Analytics';
+import { AnalyticsCategories, AnalyticsActions, analyticsEvent } from '../../util/Analytics';
 
 interface IHomeState {
 	loading: boolean;
@@ -99,7 +99,7 @@ class Home extends React.Component <IGenericRouteProps, IHomeState> {
 	}
 
 	private linkClicked(label: string) {
-		ga('send', 'event', AnalyticsCategories.Home, AnalyticsActions.Click, label);
+		analyticsEvent(AnalyticsCategories.Home, AnalyticsActions.Click, label);
 	}
 }
 

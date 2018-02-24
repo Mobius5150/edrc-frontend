@@ -1,5 +1,6 @@
 import { Edrc, Client } from './Edrc';
 import { ObjectCache } from '../util/ObjectCache';
+import { GoogleAppDimension, analyticsDimension } from '../util/Analytics';
 
 export interface IUser {
 	id: string;
@@ -58,13 +59,13 @@ export class UserController {
 		UserController.CurrentUserPromise = new Promise<IUser>(async (resolve, reject) => {
 			const userResponse = await this.edrcClient({ path: 'api/v1/user/current'});
 			if (userResponse.status.code !== 200) {
-				ga('set', 'dimension1', 'unauthenticated');
+				analyticsDimension(GoogleAppDimension.Authentication, 'unauthenticated');
 				reject(new Error(`User Response ${userResponse.status.text}`));
 			} else {
 				UserController.CurrentUser = this.toUser(userResponse.entity);
 				UserController.CurrentUserPromise = 'loaded';
 				UserController.Cache.addToCache(UserController.CurrentUser, 1);
-				ga('set', 'dimension1', UserController.CurrentUser.github ? 'github' : 'other');
+				analyticsDimension(GoogleAppDimension.Authentication, UserController.CurrentUser.github ? 'github' : 'other');
 				resolve(UserController.CurrentUser);
 			}
 		});
