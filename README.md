@@ -1,3 +1,6 @@
+# About
+[edrc.me](https://edrc.me) is a free tool for working with AutoDesk Eagle files on GitHub. It automates DRC checks, image generation, gerber generation, and makes it easy to share the status of your projects. This is the source for the frontend.
+
 # Getting Started
 First, make sure you install any NodeJS dependencies:
 ```bash
